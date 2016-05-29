@@ -1,0 +1,284 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml" >
+
+        <ui:define name="center">
+
+            <h:form id="searchForm"  >
+                <br/>
+                <p:outputPanel  rendered="#{!empty userManager.loggedTeacher}">
+                    <p:spacer width="10"/><h:outputText value="My Advisory for #{bedSectionMC.completeSY}"  styleClass="title_custom"/>
+                    <br/>
+                    <p:spacer width="10"/><h:outputText value="List of sections you are advising."/>
+                    <br/>
+                    <br/>
+                </p:outputPanel>
+
+                <p:outputPanel rendered="#{!empty userManager.loggedSystemUser}">
+                    <p:spacer width="10"/><h:outputText value="Sections Master List: #{bedSectionMC.completeSY}"  styleClass="title_custom"/>
+                    <br/>
+                    <p:spacer width="10"/><h:outputText value="The Master list of sections. You may change the school year at Global Settings "/>
+
+                    <br/>
+
+                    <h:panelGrid columns="4">
+                        <h:panelGrid columns="5" id="searchPanel">
+
+                            <p:focus context="searchPanel"/>
+                            <h:panelGroup>
+                                <p:spacer width="2"/>
+                                <h:outputLabel value="Search:" />
+                                &nbsp;
+                                <p:inputText value="#{userManager.sectionSearchKeyword}" />
+                                &nbsp;
+                                <p:commandButton  id="search_button" update=":mainForm"   
+                                                  action="#{bedSectionMC.search()}" icon="ui-icon-search" />
+                                &nbsp;
+                            </h:panelGroup> 
+
+                        </h:panelGrid>
+                        <p:commandButton  rendered="#{!empty userManager.loggedSystemUser}"  value="Create New Section" action="#{bedSectionMC.createNew()}" />
+                    </h:panelGrid>
+
+                </p:outputPanel>
+
+            </h:form>
+
+            <h:form id="mainForm"  >
+                <p:growl autoUpdate="true" id="messages" showDetail="true" life="15000"/>
+
+                <p:dataTable styleClass="hide-column-names" var="datum" 
+                             rowIndexVar="rindex" value="#{bedSectionMC.sectionList}"
+                             id="dataTable" scrollable="true" liveScroll="true" scrollRows="10" scrollHeight="400">
+
+                    <p:column width="20">
+                        <center>
+                            <p:graphicImage value="/images/#{datum.avatarFileName}_sub.jpeg"/>
+                        </center>
+                    </p:column>
+
+                    <p:column rendered="true" width="500"> 
+                        <br/>
+
+                        <p:spacer/>
+                        <p:outputLabel value="#{rindex + 1}. #{datum.name}" /> 
+                        &nbsp;
+                        <p:outputLabel value="Grade: #{datum.year}"/> 
+                        &nbsp;  
+                        <p:outputLabel style="font-size: 13px" value="Population: #{datum.population}" /> 
+                        &nbsp;
+                        <p:outputLabel value ="Adviser: #{datum.adviser.fullNameLower}" rendered="#{datum.adviser != null}" style="font-size: 13px; font-weight: bold; text-transform: capitalize; text-decoration: none;"/>
+
+                        <p:separator id="separator"/>  
+                        <p:commandButton icon="ui-icon-pencil" value="Profile"  rendered="#{!empty userManager.loggedSystemUser}" action="#{bedSectionMC.editSection(datum.id)}"  />
+                        <p:spacer width="1"/>
+                        <p:commandButton  icon = "ui-icon-person" value="Enrollments"  action="#{bedSectionMC.editEnrollment(datum.id)}"/>
+                        <p:spacer width="1"/>
+                        <p:commandButton  icon="ui-icon-star" value="Character" action=  "#{bedSectionMC.editCharacterRecords(datum.id)}"  />
+                        <p:spacer width="1"/>
+                        <p:commandButton   icon="ui-icon-calculator" value="Attendance" action="#{bedSectionMC.editAttandance(datum.id)}"/>
+                        <p:spacer width="1"/>
+                        <p:commandButton   icon="ui-icon-comment" value="Narrative"  action="#{bedSectionMC.editNarrative(datum.id)}" />
+
+                        <p:spacer width="2"/>
+                        <p:outputLabel value="|"/>
+                        <p:spacer width="2"/>
+
+                        <p:commandButton icon="ui-icon-print" rendered="true" value="Report Cards" actionListener="#{bedSectionMC.select(datum)}"  onclick="PF('reportCardDiag').show();"/>
+                        <p:spacer width="1"/>
+                        <p:commandButton icon="ui-icon-print"   rendered="true"  value="Grading Sheets"  actionListener="#{bedSectionMC.select(datum)}" onclick="PF('gradingSheetDiag').show();" />
+                        <p:spacer width="1"/>
+                        <p:commandButton icon="ui-icon-print"   rendered="true"  value="Class Ranking" actionListener="#{bedSectionMC.select(datum)}" onclick="PF('rankPrintDiag').show();" />
+                        <p:spacer width="1"/>
+                        <p:commandButton icon="ui-icon-print"   rendered="true"  value="Master Sheet" actionListener="#{bedSectionMC.select(datum)}" onclick="PF('msheetDiag').show();" />
+                        <p:spacer width ="1"/>
+                        <p:commandButton icon="ui-icon-print"   rendered="true"  value="Class List" actionListener="#{bedSectionMC.select(datum)}" onclick="PF('classListDiag').show();" />
+                        <p:spacer width ="1"/>
+                        <p:commandButton icon="ui-icon-print"   rendered="true"  value="SF5" action="#{reportsController.f1008(datum)}"/>
+
+                        <br/>
+                        <p:spacer/>
+                    </p:column>
+
+                    <p:column rendered="false" headerText=""  width="40" > 
+                        <p:commandLink value="Remove"/>
+                    </p:column>
+
+                </p:dataTable>
+
+                <br/>
+
+            </h:form>
+
+            <p:dialog  header="Report Card Printing" widgetVar="reportCardDiag"  resizable="false" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                <h:form id="reportCardDiagForm">
+
+                    <p:outputLabel value="Front/Back Page Options:" style="font-weight: bold"/>
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Attendance Start:"/> 
+                        <p:selectOneMenu  value="#{bedSectionMC.intOption3}" style="width: 100px" >
+                            <p:ajax update=":reportCardDiagForm" />
+                            <f:selectItem itemLabel="All" itemValue="0" />
+                            <f:selectItem itemLabel="June" itemValue="1" />
+                            <f:selectItem itemLabel="July" itemValue="2" />
+                            <f:selectItem itemLabel="Aug" itemValue="3" />
+                            <f:selectItem itemLabel="Sept" itemValue="4" />
+                            <f:selectItem itemLabel="Oct" itemValue="5" />
+                            <f:selectItem itemLabel="Nov" itemValue="6" />
+                            <f:selectItem itemLabel="Dec" itemValue="7" />
+                            <f:selectItem itemLabel="Jan" itemValue="8" />
+                            <f:selectItem itemLabel="Feb" itemValue="9" />
+                            <f:selectItem itemLabel="March" itemValue="10" />
+                        </p:selectOneMenu>
+                        <p:outputLabel rendered="#{bedSectionMC.intOption3 != 0}" value="Attendance End:" /> 
+                        <p:selectOneMenu rendered="#{bedSectionMC.intOption3 != 0}"  
+                                         value="#{bedSectionMC.intOption4}" style="width: 100px" >
+                            <f:selectItem itemLabel="June" itemValue="1" />
+                            <f:selectItem itemLabel="July" itemValue="2" />
+                            <f:selectItem itemLabel="Aug" itemValue="3" />
+                            <f:selectItem itemLabel="Sept" itemValue="4" />
+                            <f:selectItem itemLabel="Oct" itemValue="5" />
+                            <f:selectItem itemLabel="Nov" itemValue="6" />
+                            <f:selectItem itemLabel="Dec" itemValue="7" />
+                            <f:selectItem itemLabel="Jan" itemValue="8" />
+                            <f:selectItem itemLabel="Feb" itemValue="9" />
+                            <f:selectItem itemLabel="March" itemValue="10" />
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <br/> 
+                    <p:outputLabel value="General Options:" style="font-weight: bold;"/>
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Gender: "/> 
+                        <p:selectOneMenu  value="#{bedSectionMC.intOption1}" style="width: 100px">
+                            <f:selectItem itemLabel="Male" itemValue="1" />
+                            <f:selectItem itemLabel="Female" itemValue="2" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Grading Period: " /> 
+                        <p:selectOneMenu  value="#{bedSectionMC.intOption2}" style="width: 100px">
+                            <f:selectItem itemLabel="All" itemValue="0" />
+                            <f:selectItem itemLabel="1st" itemValue="1" />
+                            <f:selectItem itemLabel="2nd" itemValue="2" />
+                            <f:selectItem itemLabel="3rd" itemValue="3" />
+                            <f:selectItem itemLabel="4th" itemValue="4" />
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <br/>
+                    <p:commandButton value="Front-Back Page" onclick="#PF('reportCardDiag').hide()" action="#{reportsController.f1002(bedSectionMC.selectedBedSection)}"/>
+                    <p:commandButton value="Center Page" onclick="#PF('reportCardDiag').hide()" action="#{reportsController.f1003(bedSectionMC.selectedBedSection)}"/>
+                    <p:commandButton value="Single Page" onclick="#PF('reportCardDiag').hide()" action="#{reportsController.f15(bedSectionMC.selectedBedSection)}"/>
+
+                </h:form> 
+
+            </p:dialog>
+
+            <p:dialog  header="Grading Sheets Printing" widgetVar="gradingSheetDiag"  resizable="false" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                <h:form>
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Options: "/> 
+                        <p:selectOneMenu  value="#{bedSectionMC.intOption1}" >
+                            <f:selectItem itemLabel="Male" itemValue="1" />
+                            <f:selectItem itemLabel="Female" itemValue="2" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton  value="Print" onclick="gradingSheetDiag.hide()" action="#{reportsController.f1004(bedSectionMC.selectedBedSection)}"/>
+
+
+                </h:form> 
+
+            </p:dialog>
+
+            <p:dialog  header="Rank Printing Dialog" widgetVar="rankPrintDiag"  resizable="false" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                <h:form id="rankPrint"  >
+
+                    <p:panelGrid columns="2">
+
+                        <p:outputLabel value="Gender: "/> 
+                        <p:selectOneMenu  value="#{bedSectionMC.intOption1}" >
+
+                            <f:selectItem itemLabel="Male" itemValue="1" />
+                            <f:selectItem itemLabel="Female" itemValue="2" />
+                            <f:selectItem itemLabel="All" itemValue="3" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Order by: "/> 
+                        <p:selectOneMenu value="#{bedSectionMC.intOption2}" >
+                            <f:selectItem itemLabel="Name" itemValue="1" />
+                            <f:selectItem itemLabel="Rank" itemValue="2" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Grading Period: "/> 
+                        <p:selectOneMenu  value="#{bedSectionMC.intOption3}" >
+
+                            <f:selectItem itemLabel="First" itemValue="1" />
+                            <f:selectItem itemLabel="Second" itemValue="2" />
+                            <f:selectItem itemLabel="Third" itemValue="3" />
+                            <f:selectItem itemLabel="Fourth" itemValue="4" />
+                            <f:selectItem itemLabel="Finals" itemValue="5" />
+
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+                    <br/>
+                    <p:commandButton  value="Print" onclick="enrollDialog.hide()" action="#{reportsController.f1005(bedSectionMC.selectedBedSection)}"/>
+
+                </h:form> 
+
+            </p:dialog>
+
+            <p:dialog  header="Master Sheet Printing" widgetVar="msheetDiag" width="300"  resizable="false" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                <h:form >
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Grading Period: "/> 
+                        <p:selectOneMenu  value="#{bedSectionMC.intOption1}" >
+                            <f:selectItem itemLabel="First" itemValue="1" />
+                            <f:selectItem itemLabel="Second" itemValue="2" />
+                            <f:selectItem itemLabel="Third" itemValue="3" />
+                            <f:selectItem itemLabel="Fourth" itemValue="4" />
+                            <f:selectItem itemLabel="Final" itemValue="5" />
+                            <f:selectItem itemLabel="Final (Summary)" itemValue="6" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton  value="Print" onclick="msheetDiag.hide()" action="#{reportsController.f1006(bedSectionMC.selectedBedSection)}"/>
+
+                </h:form> 
+
+            </p:dialog>
+
+            <p:dialog  header="Class List Printing" widgetVar="classListDiag"  resizable="false" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                <h:form >
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Options: "/> 
+                        <p:selectOneMenu  value="#{bedSectionMC.intOption1}" >
+                            <f:selectItem itemLabel="All (Mixed)" itemValue="1" />
+                            <f:selectItem itemLabel="All (Grouped)" itemValue="2" />
+                            <f:selectItem itemLabel="Male" itemValue="3" />
+                            <f:selectItem itemLabel="Female" itemValue="4" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton  value="Print" onclick="classListDiag.hide()" action="#{reportsController.f1007(bedSectionMC.selectedBedSection)}"/>
+
+                </h:form> 
+
+            </p:dialog>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+

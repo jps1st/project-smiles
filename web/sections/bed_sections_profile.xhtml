@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <h:form id="mainForm">
+
+                <h:panelGrid columns="2">
+                    <h:panelGrid columns="1">
+                        <p:graphicImage value="/images/#{bedSectionProfileMC.section.avatarFileName}.jpeg"/>
+                        <p:commandLink value="Change Avatar" onclick="PF('changeAvatarDiag').show()"/>
+                    </h:panelGrid>
+                    <h:panelGroup>
+                        &nbsp;&nbsp;
+                        <h:outputText  value="Section Profile" styleClass="title_custom"/>
+                        <br/>
+                        &nbsp;&nbsp;
+                        <h:outputText value="Edit section parameters." />
+                    </h:panelGroup>
+                </h:panelGrid>
+
+
+                <p:growl autoUpdate="true" showDetail="true" life="15000"/>
+                <p:panelGrid columns="2">
+
+                    <h:outputLabel  value="School Year: " />
+                    <h:outputLabel style="font-weight: bold" value="#{bedSectionProfileMC.section.sy}"/>
+
+
+                    <h:outputLabel value="*Grade Level:"/>
+                    <h:panelGroup>
+                        <h:outputLabel style="font-weight: bold" rendered="#{!empty bedSectionProfileMC.section.id}" value="#{bedSectionProfileMC.section.year}"/>
+                        <p:inputText size ="30" type="number" required="true" rendered="#{empty bedSectionProfileMC.section.id}" requiredMessage="Year level missing." value="#{bedSectionProfileMC.section.year}"/>
+                        <br/>
+                        <p:outputLabel value="*PERMANENT VALUE. Edit not recommended after creation."/>
+                        &nbsp;
+                        <p:commandLink value="(Change)"  rendered="#{!empty bedSectionProfileMC.section.id}" onclick="PF('changeDiag').show()" />
+                    </h:panelGroup> 
+
+                    <h:outputLabel value="*Curriculum:"/>
+                    <p:outputPanel >
+                        <h:outputLabel style="font-weight: bold" rendered="#{!empty bedSectionProfileMC.section.id}" value="#{bedSectionProfileMC.section.curriculum.shortName}"/>
+                        <p:selectOneMenu style="width: 230px" required="true"  rendered="#{empty bedSectionProfileMC.section.id}"
+                                         requiredMessage="Curriculum missing." value="#{bedSectionProfileMC.section.curriculum}">
+                            <f:selectItem itemLabel="Select One"/>
+                            <f:selectItems value="#{bedSectionProfileMC.curriculumList}" var="curri" itemLabel="#{curri}" itemValue="#{curri}"/>
+                        </p:selectOneMenu>
+                        <br/>
+                        <p:outputLabel value="*PERMANENT VALUE. Edit NOT ALLOWED after creation."/>
+                    </p:outputPanel>
+
+                    <h:outputLabel value="Section Name:"/>
+                    <p:inputText required="true" size ="30" requiredMessage="Section name missing." value="#{bedSectionProfileMC.section.name}"/>
+
+                    <h:outputLabel value="Adviser:"/>
+                    <p:outputPanel>
+                        <p:autoComplete size ="30" required="true" scrollHeight="300" dropdown="true"
+                                        requiredMessage="Please select an adviser or assign a temporary adviser." 
+                                        value="#{bedSectionProfileMC.section.adviser}"
+                                        completeMethod="#{bedSectionProfileMC.completeTeacher}" 
+                                        var="tc" itemLabel="#{tc}" itemValue="#{tc}"   />
+                        <p:outputLabel value="Only active teachers are displayed here."/>
+                    </p:outputPanel>
+                    <h:outputLabel value="Hide subjects from card:"/>
+                    <p:autoComplete value="#{bedSectionProfileMC.hiddenSubjects}" completeMethod="#{bedSectionProfileMC.completeCurriDetails}" multiple="true"/>
+                </p:panelGrid>
+                
+
+                <br/>
+                &nbsp;
+                <p:commandLink style="color: darkolivegreen" value="Save Changes" action="#{bedSectionProfileMC.saveChanges()}"/>
+                &nbsp;
+                <p:commandLink style="color: #e33b06" immediate="true" action="bed_sections.xhtml?faces-redirect=true" value="Back to Sections"/>
+                <br/>
+                <br/>
+            </h:form>
+
+            <p:dialog width="600" header="Change Grade Level" widgetVar="changeDiag"  resizable="false" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                <h:form id="changeGradeLevel">
+
+                    <div style="text-align: justify">This action will mark this section for year level change. No changes will be made until you hit 'Save Changes'. 
+                        Note that by doing this, related teacher loads and student grade records will be removed upon save. This does not affect the enrollment list.
+                    </div>
+                    <br/>
+                    <br/>
+
+                    <p:outputLabel value="Change to Grade Level: "/> 
+                    &nbsp;
+                    <p:inputText type="number" value="#{bedSectionProfileMC.section.year}"/>  
+                    &nbsp;
+                    <p:commandButton value="Change" update=":mainForm" actionListener="#{bedSectionProfileMC.markForYearLevelChange()}" onclick="changeDiag.hide()"/>
+
+                    <br/>
+                </h:form> 
+            </p:dialog>
+
+            <p:dialog width="400" header="Change Avatar" widgetVar="changeAvatarDiag"  resizable="false" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                <h:form id="changeAvatarDiagForm" enctype="multipart/form-data" >
+                    <br/>
+
+                    <p:fileUpload value="#{bedSectionProfileMC.file}" mode="simple" style="font-family: kalinga;"/>  
+                    <br/>
+                    <br/>
+                    <p:commandButton value="Submit" ajax="false" update=":mainForm" actionListener="#{bedSectionProfileMC.uploadNewAvatar()}" onclick="PF('changeAvatarDiag').hide()"/>
+
+                    <br/>
+                </h:form> 
+            </p:dialog>
+
+        </ui:define>
+
+    </ui:composition>
+
+
+</html>

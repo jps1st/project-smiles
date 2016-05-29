@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Curriculum Details" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Create or edit specific information about a curriculum. " />
+            <br/>
+            <br/>
+
+            <h:form id="curriDiagForm">
+                <p:growl autoUpdate="true" showDetail="true" life="15000"/>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Short name:"/>
+                    <p:inputText required="true" requiredMessage="Short name required." value="#{bedCurriculumController.current.shortName}" size="30"/>
+                    <p:outputLabel value="Effective year:"/>
+                    <p:inputText type="number" required="true" requiredMessage="Effective year required." value="#{bedCurriculumController.current.effectiveSY}" size="30"/>
+                    <p:outputLabel value="Word for 'Grade':"/>
+                    <p:inputText value="#{bedCurriculumController.current.wordForGrade}" size="30"/>
+                </p:panelGrid>
+                <br/>
+                &nbsp;
+                <p:commandLink style="color: darkolivegreen" value="Save Changes" action="#{bedCurriculumController.curri_view_edit_SaveChanges()}"/>&nbsp;&nbsp;
+                <p:commandLink immediate="true" style="color: #e33b06" value="Back to Curriculum Roster" action="curriculumsMain.xhtml?faces-redirect=true"/>
+
+            </h:form>
+
+
+        </ui:define>
+
+
+    </ui:composition>
+
+
+</html>
+

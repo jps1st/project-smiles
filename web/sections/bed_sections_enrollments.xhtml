@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <h:form id="mainForm"  >
+
+                <p:growl showDetail="true" autoUpdate="true" life="15000"/>
+
+                <br/>
+                <p:spacer width="10"/><p:spacer width="10"/>
+                <h:outputText value="Enrolled in #{bedSectionEnrollmentMC.section.name}" styleClass="title_custom"/>
+                <p:spacer width="10"/>
+                <p:selectOneButton value="#{bedSectionEnrollmentMC.viewOptions}">
+                    <p:ajax update=":mainForm:enrollmentTbl" listener="#{bedSectionEnrollmentMC.refreshEnrollmentList()}" />
+                    <f:selectItem itemLabel="Boys" itemValue="1" />
+                    <f:selectItem itemLabel="Girls" itemValue="2" />
+                </p:selectOneButton>
+                <br/>
+                <p:spacer width="10"/><p:spacer width="10"/>
+                <h:outputText value="Add or remove students from this section." />
+                <br/>
+                <br/>
+                <p:dataTable id="enrollmentTbl" paginator="true" var="datum" rowIndexVar="rindex" 
+                             value="#{bedSectionEnrollmentMC.maleEnrollments}" rows="10"
+                             scrollRows="500" liveScroll="true" lazy="true" > 
+
+                    <p:column headerText="#" width="15" > 
+                        #{rindex + 1}  
+                    </p:column>
+                    <p:column headerText="ID" width="150" > 
+                        <h:outputText value="#{datum.student.learnerIdNo}"  />
+                    </p:column>
+                    <p:column headerText="Name"> 
+
+                        <p:commandLink rendered="true" ajax="false" 
+                                       action="#{studentMainController.editViewStudent(datum.student)}">
+                            <p:graphicImage id="editorStd" value="/design/icons/16/edit1.png"/>
+                            <p:tooltip value="Edit Student" for="editorStd"/>
+                            <p:spacer width="10"/>
+                            <h:outputText value="#{datum.student.fullName}"  style="font-weight: bold;"/>
+                        </p:commandLink>
+
+                    </p:column>
+                    <p:column headerText="Gen" width="30" >  
+                        <h:outputText value="#{datum.student.sex}"   />
+                    </p:column>
+
+                    <p:column headerText="Hon" width="35">
+                        <p:selectBooleanCheckbox value="#{datum.honorLearner}">
+                            <p:ajax listener="#{bedSectionEnrollmentMC.saveEnrollment(datum)}"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+                    <p:column headerText="Enroll Code">
+                        <p:inplace label="#{datum.remarksCode}" >
+                            <p:selectOneMenu value="#{datum.remarksCode}" style="width: 145px"> 
+                                <p:ajax listener="#{bedSectionEnrollmentMC.saveEnrollment(datum)}"/>
+                                <f:selectItem itemLabel="-- Select One --" itemValue="asdf" />
+                                <f:selectItem itemLabel="Transfered OUT" itemValue="T/O" />
+                                <f:selectItem itemLabel="Transfered IN" itemValue="T/I" />
+                                <f:selectItem itemLabel="Dropped" itemValue="DRP" />
+                                <f:selectItem itemLabel="Late Enrollment" itemValue="LE" />
+                                <f:selectItem itemLabel="CCT" itemValue="CCT" />
+                                <f:selectItem itemLabel="B/A" itemValue="B/A" />
+                                <f:selectItem itemLabel="LWD" itemValue="LWD" />
+                                <f:selectItem itemLabel="ACL" itemValue="ACL" />
+                            </p:selectOneMenu>
+                        </p:inplace>
+                    </p:column>
+                    <p:column headerText="Enroll Info">
+                        <p:inplace label="#{datum.remarksRequiredInfo}" >
+                            <p:inputText value="#{datum.remarksRequiredInfo}" style="width: 130px">
+                                <p:ajax listener="#{bedSectionEnrollmentMC.saveEnrollment(datum)}" />
+                            </p:inputText>
+                        </p:inplace>
+                    </p:column>
+                    <p:column rendered="false" headerText="Gen. Avg">
+                        <p:inplace label="#{datum.generalAverage}" >
+                            <p:outputLabel value="#{datum.generalAverage}"/>
+                            <p:inputText rendered="false" type="number" value="#{datum.generalAverage}" style="width: 130px">
+                                <p:ajax listener="#{bedSectionEnrollmentMC.saveEnrollment(datum)}" />
+                            </p:inputText>
+                        </p:inplace>
+                    </p:column>
+                    <p:column headerText="Action Taken">
+                        <p:inplace label="#{datum.actionTaken}" >
+                            <p:selectOneMenu value="#{datum.actionTaken}" style="width: 145px" >
+                                <p:ajax listener="#{bedSectionEnrollmentMC.saveEnrollment(datum)}"/>
+                                <f:selectItem itemLabel="-- Select One --" itemValue="" />
+                                <f:selectItem itemLabel="Promoted" itemValue="Promoted" />
+                                <f:selectItem itemLabel="ALS Passed" itemValue="ALS Passed" />
+                                <f:selectItem itemLabel="Continuing" itemValue="Continuing" />
+                                <f:selectItem itemLabel="Retained" itemValue="Retained" />
+                                <f:selectItem itemLabel="Irregular" itemValue="Irregular" />
+                            </p:selectOneMenu>
+                        </p:inplace>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:spacer width="10"/>
+                <p:outputLabel value="*Click on the icon before a student's name to edit that student."/>
+                <br/>
+                <br/>
+
+                <p:spacer width="10"/>
+                <h:outputText value="Student:"  />
+                <p:spacer width="10"/>
+                <p:autoComplete value="#{bedSectionEnrollmentMC.studentToEnroll}" queryDelay="1000" 
+                                placeholder="lastname, firstname" var="std" itemLabel="#{std.fullName}" forceSelection="true" 
+                                completeMethod="#{bedSectionEnrollmentMC.completeStudent}" scrollHeight="300"
+                                itemValue="#{std}" dropdown="true" >
+                    <p:ajax event="itemSelect" update=":mainForm" />  
+                    <p:column><p:outputLabel value="#{std.learnerIdNo}"/></p:column>
+                    <p:column><p:outputLabel value="#{std.fullName}"/></p:column>
+                </p:autoComplete>
+                <p:commandButton actionListener="#{bedSectionEnrollmentMC.addStudent()}"  update=":mainForm:enrollmentTbl" 
+                                 value="Enroll"  icon="ui-icon-disk"/>
+                <p:commandButton actionListener="#{bedSectionEnrollmentMC.transferStudent()}" update=":mainForm" 
+                                 value="Transfer"  icon="ui-icon-disk"/>
+                <p:commandButton onclick="confirmDialog.show()"  value="*Unenroll"  icon="ui-icon-close"/>
+                <p:outputLabel style="color: #e33b06" value="*Removes recorded grades in the process."/>
+
+                <br/>
+                <br/>
+
+                <p:spacer width="10"/>
+                <p:commandLink style="color: #e33b06" value="Back to Sections Master List" 
+                               action="bed_sections.xhtml?faces-redirect=true"/>
+            </h:form>
+
+            <p:dialog width="430" header="Confirm Unenroll" widgetVar="confirmDialog"  resizable="false" 
+                      modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                <h:form id="dialogForm"  >
+
+                    <p:outputLabel value="Are you sure you want to unenroll this student? 
+                                   This will remove all grade records (if any) in the process"/>
+                    <br/>
+                    <p:commandButton actionListener="#{bedSectionEnrollmentMC.unenrollStudent()}" 
+                                     oncomplete="confirmDialog.hide()"  update=":mainForm:enrollmentTbl" value="Unenroll"  icon="ui-icon-close"/>
+                    <p:commandButton value="Cancel" onclick="confirmDialog.hide()"/>
+
+                </h:form> 
+            </p:dialog> 
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+

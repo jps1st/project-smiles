@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <h:form id="mainForm">
+                <p:growl autoUpdate="true" showDetail="true" life="15000"/>
+
+                <br/>
+                <p:spacer width="10"/><h:outputText value="Character Traits for #{characterTraitsMC.section.name}" styleClass="title_custom"/>
+                <br/>
+                <p:spacer width="10"/><h:outputText value="Adviser task: edit individual student character grades here. " />
+                <br/>
+
+                <h:panelGrid columns="4">
+                    <p:spacer width="10"/>
+                    <p:outputLabel value ="Set the Trait Group:" />
+                    <p:selectOneMenu value="#{characterTraitsMC.section.charTraitGroup}" >
+                        <p:ajax update=":mainForm" listener="#{characterTraitsMC.saveSectionTraitGroup()}"/>
+                        <f:selectItem itemLabel="SELECT ONE" />
+                        <!--f:selectItem rendered="false" itemLabel="A" itemValue="a" />
+                        <f:selectItem rendered="false" itemLabel="B" itemValue="b" />
+                        <f:selectItem rendered="false" itemLabel="C" itemValue="c" />
+                        <f:selectItem itemLabel="K12" itemValue="d" /-->
+                        <f:selectItem itemLabel="K12-2015" itemValue="f" />
+                    </p:selectOneMenu>
+                    <p:selectOneButton value="#{characterTraitsMC.viewOptions}">
+                        <p:ajax update=":mainForm:recordTables" />
+                        <f:selectItem itemLabel="1st Quarter" itemValue="1" />
+                        <f:selectItem itemLabel="2nd Quarter" itemValue="2" />
+                        <f:selectItem itemLabel="3rd Quarter" itemValue="3" />
+                        <f:selectItem itemLabel="4th Quarter" itemValue="4" />
+                    </p:selectOneButton>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+                    <p:spacer width="10"/>
+                    <p:layout style="width: 1200px">
+
+                        <p:layoutUnit position="west">
+                            <p:dataTable style="width: 400px" rowIndexVar="rindex" var="trait" value="#{characterTraitsMC.traitList}" scrollable="true" 
+                                         liveScroll="true" scrollRows="500" selectionMode="single" selection="#{characterTraitsMC.currentCharacterTrait}" rowKey="#{trait.ctId}" > 
+                                <p:ajax update=":mainForm:recordTables" event="rowSelect" listener="#{characterTraitsMC.updateCharacterRecordsList()}" />
+
+                                <p:column headerText="#" width="15" >
+                                    #{rindex + 1}
+                                </p:column>
+
+                                <p:column headerText="Character" >
+                                    <p:commandLink rendered="true" actionListener="#{characterTraitsMC.setEditingTrait(trait) }" update=":editCharDiagForm" oncomplete="traitEditDiag.show()">
+                                        <p:graphicImage id="dl_clist1" value="/design/icons/16/edit2.png"/>
+                                    </p:commandLink>
+                                    <p:spacer width="10"/>
+                                    #{trait.traitName}
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </p:layoutUnit>
+
+                        <p:layoutUnit position="center">
+
+
+                            <h:panelGroup id="recordTables">
+
+                                <p:dataTable rowIndexVar="rindex" rendered="true" id="recordTable1"  var="datum" style="width: 760px"
+                                             value="#{characterTraitsMC.studentCharacterRecordsM}" scrollable="true" 
+                                             liveScroll="true" scrollRows="500">
+
+                                    <p:column headerText="#" width="15" >
+                                        #{rindex + 1}
+                                    </p:column>
+
+                                    <p:column headerText="Boys" width="300" > 
+                                        <p:graphicImage value="/design/icons/16/student1.png"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="#{datum.bedEnrollment.student.fullName}" style="font-weight: bold"/>
+                                    </p:column>
+
+                                    <p:column headerText="GP 1" rendered="#{characterTraitsMC.viewOptions ==1}"> 
+
+                                        <p:selectOneButton value="#{datum.p1Value}">
+                                            <p:ajax listener="#{characterTraitsMC.characterTraitsPerformSave(datum)}"/>
+                                            <f:selectItem itemLabel="AO" itemValue="AO" />
+                                            <f:selectItem itemLabel="SO" itemValue="SO" />
+                                            <f:selectItem itemLabel="RO" itemValue="RO" />
+                                            <f:selectItem itemLabel="NO" itemValue="NO" />
+                                        </p:selectOneButton>
+
+                                    </p:column>
+                                    <p:column headerText="GP 2"  rendered="#{characterTraitsMC.viewOptions ==2}" > 
+                                        <p:selectOneButton value="#{datum.p2Value}">
+                                            <p:ajax listener="#{characterTraitsMC.characterTraitsPerformSave(datum)}"/>
+                                            <f:selectItem itemLabel="AO" itemValue="AO" />
+                                            <f:selectItem itemLabel="SO" itemValue="SO" />
+                                            <f:selectItem itemLabel="RO" itemValue="RO" />
+                                            <f:selectItem itemLabel="NO" itemValue="NO" />
+                                        </p:selectOneButton>
+                                    </p:column>
+                                    <p:column headerText="GP 3"   rendered="#{characterTraitsMC.viewOptions ==3}"> 
+                                        <p:selectOneButton value="#{datum.p3Value}">
+                                            <p:ajax listener="#{characterTraitsMC.characterTraitsPerformSave(datum)}"/>
+                                            <f:selectItem itemLabel="AO" itemValue="AO" />
+                                            <f:selectItem itemLabel="SO" itemValue="SO" />
+                                            <f:selectItem itemLabel="RO" itemValue="RO" />
+                                            <f:selectItem itemLabel="NO" itemValue="NO" />
+                                        </p:selectOneButton>
+                                    </p:column>
+                                    <p:column headerText="GP 4"  rendered="#{characterTraitsMC.viewOptions ==4}" > 
+                                        <p:selectOneButton value="#{datum.p4Value}">
+                                            <p:ajax listener="#{characterTraitsMC.characterTraitsPerformSave(datum)}"/>
+                                            <f:selectItem itemLabel="AO" itemValue="AO" />
+                                            <f:selectItem itemLabel="SO" itemValue="SO" />
+                                            <f:selectItem itemLabel="RO" itemValue="RO" />
+                                            <f:selectItem itemLabel="NO" itemValue="NO" />
+                                        </p:selectOneButton>
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:dataTable rowIndexVar="rindex" rendered="true" id="recordTable2"  var="datum" style="width: 760px"
+                                             value="#{characterTraitsMC.studentCharacterRecordsF}" scrollable="true" 
+                                             liveScroll="true" scrollRows="500"> 
+
+                                    <p:column headerText="#" width="15" >
+                                        #{rindex + 1}
+                                    </p:column>
+
+                                    <p:column headerText="Girls" width="300" > 
+                                        <p:graphicImage value="/design/icons/16/student1.png"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="#{datum.bedEnrollment.student.fullName}" style="font-weight: bold"/>
+                                    </p:column>
+
+                                    <p:column headerText="GP 1" rendered="#{characterTraitsMC.viewOptions ==1}"> 
+                                        <p:selectOneButton value="#{datum.p1Value}">
+                                            <p:ajax listener="#{characterTraitsMC.characterTraitsPerformSave(datum)}"/>
+                                            <f:selectItem itemLabel="AO" itemValue="AO" />
+                                            <f:selectItem itemLabel="SO" itemValue="SO" />
+                                            <f:selectItem itemLabel="RO" itemValue="RO" />
+                                            <f:selectItem itemLabel="NO" itemValue="NO" />
+                                        </p:selectOneButton>
+                                    </p:column>
+
+                                    <p:column headerText="GP 2"  rendered="#{characterTraitsMC.viewOptions ==2}" > 
+                                        <p:selectOneButton value="#{datum.p2Value}">
+                                            <p:ajax listener="#{characterTraitsMC.characterTraitsPerformSave(datum)}"/>
+                                            <f:selectItem itemLabel="AO" itemValue="AO" />
+                                            <f:selectItem itemLabel="SO" itemValue="SO" />
+                                            <f:selectItem itemLabel="RO" itemValue="RO" />
+                                            <f:selectItem itemLabel="NO" itemValue="NO" />
+                                        </p:selectOneButton>
+                                    </p:column>
+
+                                    <p:column headerText="GP 3"   rendered="#{characterTraitsMC.viewOptions ==3}"> 
+                                        <p:selectOneButton value="#{datum.p3Value}">
+                                            <p:ajax listener="#{characterTraitsMC.characterTraitsPerformSave(datum)}"/>
+                                            <f:selectItem itemLabel="AO" itemValue="AO" />
+                                            <f:selectItem itemLabel="SO" itemValue="SO" />
+                                            <f:selectItem itemLabel="RO" itemValue="RO" />
+                                            <f:selectItem itemLabel="NO" itemValue="NO" />
+                                        </p:selectOneButton>
+                                    </p:column>
+                                    <p:column headerText="GP 4"  rendered="#{characterTraitsMC.viewOptions ==4}" > 
+                                        <p:selectOneButton value="#{datum.p4Value}">
+                                            <p:ajax listener="#{characterTraitsMC.characterTraitsPerformSave(datum)}"/>
+                                            <f:selectItem itemLabel="AO" itemValue="AO" />
+                                            <f:selectItem itemLabel="SO" itemValue="SO" />
+                                            <f:selectItem itemLabel="RO" itemValue="RO" />
+                                            <f:selectItem itemLabel="NO" itemValue="NO" />
+                                        </p:selectOneButton>
+                                    </p:column>
+                                </p:dataTable>
+
+                            </h:panelGroup>
+
+                        </p:layoutUnit>
+
+                    </p:layout>
+
+                </h:panelGrid>
+
+            </h:form>
+
+            <p:dialog  header="Edit Character Trait" widgetVar="traitEditDiag"  resizable="false" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+                <h:form id="editCharDiagForm">
+                    <p:messages autoUpdate="true" showDetail="false"/>
+                    <p:outputLabel value="Description:  " style="font-weight: bold"/> 
+                    <br/>
+                    <br/>
+                    <p:inputTextarea value="#{characterTraitsMC.editingTrait.traitName}" cols="50" rows="10"/>  
+
+                    <br/>
+                    <p:commandButton value="Save" update=":mainForm" actionListener="#{characterTraitsMC.saveEditingTrait()}" onclick="traitEditDiag.hide()"/>
+                    <p:commandButton value="Cancel" onclick="traitEditDiag.hide()"/>
+                    <br/>
+
+                </h:form> 
+            </p:dialog>
+
+        </ui:define>
+
+
+
+    </ui:composition>
+
+
+</html>
+

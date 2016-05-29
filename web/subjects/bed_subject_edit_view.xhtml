@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Subject Details" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Edit subject details and parameters." />
+            <br/>
+            <br/>
+
+            <h:form id="subjectDialogForm"  >
+
+                <p:messages id="err_messages"  autoUpdate="true"/> 
+
+                <p:panelGrid columns="2" style="width: 320px">
+                    <h:outputLabel value="Code:"/>
+                    <p:outputPanel>
+                        <p:inputText value="#{subjectMainController.currentSubject.subjcode}" size="29" />
+                        <br/>
+                        <p:outputLabel value="*Please create a convention for coding subjects. Ex.: 'Eng1' for Grade 1 English"/>
+                    </p:outputPanel>
+                    <h:outputLabel value="Usages:"/> 
+                    <h:outputLabel value="#{subjectMainController.getUsageInCurriculum()}"/>
+                    <h:outputLabel value="Description:"/>
+                    <p:outputPanel>
+                        <p:inputTextarea value="#{subjectMainController.currentSubject.subjdesc}"   rows="5" cols="50" counter="counter" maxlength="255"     
+                                         counterTemplate="{0} characters remaining." autoResize="false"/>
+                        <h:outputText id="counter" />
+                    </p:outputPanel>
+                </p:panelGrid>
+
+                &nbsp;
+                <p:outputLabel value="Warning! Modifying a subject utilized by a curriculum may be unwanted."/>
+                <br/>
+                <br/>
+                &nbsp;
+                <p:commandLink style="color: darkolivegreen" value="Save Changes" action="#{subjectMainController.bed_subject_edit_view_SaveChanges()}"/>&nbsp;&nbsp;
+                <p:commandLink immediate="true" style="color: #e33b06" value="Back to Subject Roster" action="subjectMain.xhtml?faces-redirect=true"/>
+
+                <br/>
+            </h:form> 
+
+        </ui:define>
+
+
+    </ui:composition>
+
+
+</html>
+

@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>Smiles</title>
+            <link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'/>
+            <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+            <h:outputStylesheet name="css/jsfcrud.css"/>
+        </f:facet>
+    </h:head>
+
+    <h:body>
+        <p:growl showDetail="true" autoUpdate="true" life="15000"/>
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="55" resizable="true" closable="true" collapsible="true" >
+                <h:form>
+                    <h:panelGrid columns="4" style="margin:auto; right: initial" >
+
+                        <p:graphicImage value="/design/icons/32/login1.png"/>
+                        <p:outputPanel>
+                            <h:outputLabel value="User Name/ID:"/>&nbsp;
+                            <p:inputText id="username" value="#{userManager.username}" style="width:170px;" required="true" requiredMessage="Username is required!"/>
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <h:outputLabel value="&nbsp;Password:"/>&nbsp;
+                            <p:password autocomplete="false" id="password" value="#{userManager.password}" style="width:170px;" required="true" requiredMessage="Password is required!"/>
+                        </p:outputPanel>
+                        <p:commandButton value="Login" action="#{userManager.logUser()}" ajax="false"/>
+
+                    </h:panelGrid>
+                </h:form>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center" style="height: 300px">
+
+                <div class="centerDiv">                
+                    <h:panelGrid  columns="3"  style="vertical-align: middle; margin:auto; right: initial" >
+                        <p:graphicImage value="/design/heracleo/logo.png"/>
+                        <p:spacer width="10"/>
+                        <h:panelGroup>
+
+                            <h1>HCMNHS is a happier place for teachers and learners!</h1>
+                            
+                            <p>2016-05<br/>Welcome to SY 2015-2016! We welcome all sorts of comments and suggestions about THE SMILES PROJECT. We love it when you point out problems because they allow us to put little smiles on your faces later on. Please continue to feed this project with ideas.</p>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </div>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60" closable="true" collapsible="true">
+                <center>
+                    Powered by RandomPie Technologies Inc. <br/>
+                    All Rights Reserved. Copyright 2015
+                </center>
+
+            </p:layoutUnit>
+
+        </p:layout>
+
+
+    </h:body>
+
+
+</html>

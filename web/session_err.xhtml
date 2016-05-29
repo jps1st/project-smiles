@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>Smiles</title>
+            <h:outputStylesheet name="css/jsfcrud.css"/>
+        </f:facet>
+    </h:head>
+
+    <h:body>
+        <p:growl showDetail="true" autoUpdate="true" life="15000"/>
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="center" style="height: 300px">
+
+                <div class="centerDiv">                
+                    <h:panelGrid  columns="3"  style="vertical-align: middle; margin:auto; right: initial" >
+                        <p:graphicImage value="/design/heracleo/logo.png"/>
+                        <p:spacer width="10"/>
+                        <h:panelGroup>
+                            
+                            <h1>Oops! This page's session expired.</h1>
+                            <p>Don't get annoyed. This is for data security. Please login again and we'll get you a new one.</p>
+                            <h:link outcome="login" value="Link to login page." />
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </div>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60" closable="true" collapsible="true">
+                <center>
+                    Powered by: RandomPi Technologies Inc. <br/>
+                    All Rights Reserved. Copyright 2015
+                </center>
+
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+</html>

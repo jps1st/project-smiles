@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="936" pageHeight="612" orientation="Landscape" columnWidth="896" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5a0b5991-5f11-44b1-906c-4f8e77de0ac4">
+    <property name="ireport.zoom" value="1.0"/>
+    <property name="ireport.x" value="244"/>
+    <property name="ireport.y" value="0"/>
+    <style name="Crosstab Data Text" hAlign="Center"/>
+    <field name="row" class="java.lang.String"/>
+    <field name="col" class="java.lang.String"/>
+    <field name="val" class="java.lang.String"/>
+    <field name="val1" class="java.lang.String"/>
+    <field name="grading" class="java.lang.String"/>
+    <field name="sec" class="java.lang.String"/>
+    <field name="subjectName" class="java.lang.String"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="120" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="896" height="71" uuid="3770c236-e951-490e-b172-c612a6892310"/>
+                <textElement textAlignment="Center">
+                    <font fontName="Verdana"/>
+                </textElement>
+                <text><![CDATA[Republic of the Philippines
+Department of Education
+Region XI
+HERACLEO CASCO MEMORIAL NATIONAL HIGH SCHOOL
+Sta. Maria, Davao del Sur]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="71" width="896" height="20" uuid="a6ec245d-24ed-493f-9ebc-6d505251191f"/>
+                <textElement textAlignment="Center" markup="none">
+                    <font fontName="Verdana" size="12" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Consolidated Grading Sheet for " + $F{subjectName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="192" y="100" width="211" height="20" uuid="e7f6d771-7540-4082-8fbc-1da5c801031c"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Verdana" size="8" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{grading} + "    " + $F{sec}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <pageHeader>
+        <band splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band splitType="Stretch"/>
+    </columnHeader>
+    <detail>
+        <band splitType="Stretch"/>
+    </detail>
+    <columnFooter>
+        <band splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band splitType="Stretch"/>
+    </pageFooter>
+    <summary>
+        <band height="179" splitType="Stretch">
+            <crosstab>
+                <reportElement x="192" y="0" width="704" height="179" uuid="2586a542-0508-476e-8e3f-187295fb267b"/>
+                <crosstabDataset isDataPreSorted="true"/>
+                <crosstabHeaderCell>
+                    <cellContents>
+                        <rectangle>
+                            <reportElement style="Crosstab Data Text" x="0" y="0" width="166" height="72" uuid="57480869-9a5a-4221-beb1-50fad263edfe"/>
+                            <graphicElement>
+                                <pen lineWidth="0.5"/>
+                            </graphicElement>
+                        </rectangle>
+                        <staticText>
+                            <reportElement style="Crosstab Data Text" x="0" y="36" width="166" height="36" uuid="42b52acd-6b1c-4c5d-a05d-e53f0e3075db"/>
+                            <textElement verticalAlignment="Middle">
+                                <font size="14"/>
+                            </textElement>
+                            <text><![CDATA[NAME OF STUDENTS]]></text>
+                        </staticText>
+                    </cellContents>
+                </crosstabHeaderCell>
+                <rowGroup name="row" width="166">
+                    <bucket class="java.lang.String">
+                        <bucketExpression><![CDATA[$F{row}]]></bucketExpression>
+                    </bucket>
+                    <crosstabRowHeader>
+                        <cellContents backcolor="#F0F8FF" mode="Opaque">
+                            <rectangle>
+                                <reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="166" height="20" uuid="2e908ae0-00c8-49e8-8a5a-e3602bf74e59"/>
+                                <graphicElement>
+                                    <pen lineWidth="0.5"/>
+                                </graphicElement>
+                            </rectangle>
+                            <textField isStretchWithOverflow="true">
+                                <reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="166" height="20" uuid="1626b1cd-60fd-4ab3-b33f-c75c15c59b51"/>
+                                <textElement textAlignment="Left" verticalAlignment="Middle">
+                                    <font fontName="Verdana" size="7"/>
+                                </textElement>
+                                <textFieldExpression><![CDATA[" " + $V{row}]]></textFieldExpression>
+                            </textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader>
+                        <cellContents/>
+                    </crosstabTotalRowHeader>
+                </rowGroup>
+                <columnGroup name="col" height="72">
+                    <bucket class="java.lang.String">
+                        <bucketExpression><![CDATA[$F{col}]]></bucketExpression>
+                    </bucket>
+                    <crosstabColumnHeader>
+                        <cellContents backcolor="#F0F8FF" mode="Opaque">
+                            <textField>
+                                <reportElement style="Crosstab Data Text" x="0" y="0" width="48" height="24" uuid="75690f29-9a62-4b8d-9b66-77adf553d471"/>
+                                <textElement verticalAlignment="Middle">
+                                    <font fontName="Verdana" size="7"/>
+                                </textElement>
+                                <textFieldExpression><![CDATA[$V{col}]]></textFieldExpression>
+                            </textField>
+                            <rectangle>
+                                <reportElement style="Crosstab Data Text" mode="Transparent" x="0" y="0" width="48" height="24" uuid="7de62aec-8a12-403f-b3db-20c4ca048245"/>
+                                <graphicElement>
+                                    <pen lineWidth="0.5"/>
+                                </graphicElement>
+                            </rectangle>
+                            <staticText>
+                                <reportElement style="Crosstab Data Text" x="0" y="24" width="24" height="48" uuid="d18b9e02-ca0d-4bf8-b709-4b3e65d91dc7"/>
+                                <textElement verticalAlignment="Middle" rotation="Left">
+                                    <font fontName="Verdana" size="6"/>
+                                </textElement>
+                                <text><![CDATA[NUMERICAL]]></text>
+                            </staticText>
+                            <staticText>
+                                <reportElement style="Crosstab Data Text" x="24" y="24" width="24" height="48" uuid="08705e92-0f92-4ed8-98db-aa778772a6c3"/>
+                                <textElement verticalAlignment="Middle" rotation="Left">
+                                    <font fontName="Verdana" size="6"/>
+                                </textElement>
+                                <text><![CDATA[DESCRIPTIVE]]></text>
+                            </staticText>
+                            <rectangle>
+                                <reportElement style="Crosstab Data Text" mode="Transparent" x="0" y="24" width="24" height="48" uuid="cf4ceead-b266-488d-9ad4-4c04fc84c44c"/>
+                                <graphicElement>
+                                    <pen lineWidth="0.5"/>
+                                </graphicElement>
+                            </rectangle>
+                            <rectangle>
+                                <reportElement style="Crosstab Data Text" mode="Transparent" x="24" y="24" width="24" height="48" uuid="5f3699ff-b365-41a4-9e15-2e0bcacbc892"/>
+                                <graphicElement>
+                                    <pen lineWidth="0.5"/>
+                                </graphicElement>
+                            </rectangle>
+                        </cellContents>
+                    </crosstabColumnHeader>
+                    <crosstabTotalColumnHeader>
+                        <cellContents/>
+                    </crosstabTotalColumnHeader>
+                </columnGroup>
+                <measure name="valMeasure" class="java.lang.String">
+                    <measureExpression><![CDATA[$F{val}]]></measureExpression>
+                </measure>
+                <measure name="measure1" class="java.lang.String">
+                    <measureExpression><![CDATA[$F{val1}]]></measureExpression>
+                </measure>
+                <crosstabCell width="48" height="20">
+                    <cellContents>
+                        <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                            <reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="24" height="20" uuid="afe3a026-4f74-4610-bcfa-60fced50802a"/>
+                            <textElement verticalAlignment="Middle">
+                                <font fontName="Verdana" size="8"/>
+                            </textElement>
+                            <textFieldExpression><![CDATA[$V{valMeasure}]]></textFieldExpression>
+                        </textField>
+                        <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                            <reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="24" y="0" width="24" height="20" uuid="1319287d-baaa-4e13-a6bc-b72713728209"/>
+                            <textElement verticalAlignment="Middle">
+                                <font fontName="Verdana" size="8"/>
+                            </textElement>
+                            <textFieldExpression><![CDATA[$V{measure1}]]></textFieldExpression>
+                        </textField>
+                        <rectangle>
+                            <reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="24" height="20" uuid="010c5846-c536-45f8-b2f3-5024b491f041"/>
+                            <graphicElement>
+                                <pen lineWidth="0.5"/>
+                            </graphicElement>
+                        </rectangle>
+                        <rectangle>
+                            <reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" mode="Transparent" x="24" y="0" width="24" height="20" uuid="62db3d9e-23a2-4f84-9bba-af6b22ae8732"/>
+                            <graphicElement>
+                                <pen lineWidth="0.5"/>
+                            </graphicElement>
+                        </rectangle>
+                    </cellContents>
+                </crosstabCell>
+                <crosstabCell height="25" rowTotalGroup="row">
+                    <cellContents backcolor="#BFE1FF" mode="Opaque">
+                        <textField>
+                            <reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="7cbacfa9-d65d-4ebb-9b85-a98cc9082995"/>
+                            <textFieldExpression><![CDATA[$V{valMeasure}]]></textFieldExpression>
+                        </textField>
+                    </cellContents>
+                </crosstabCell>
+                <crosstabCell width="50" columnTotalGroup="col">
+                    <cellContents backcolor="#BFE1FF" mode="Opaque">
+                        <textField>
+                            <reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="4e1a3d73-8b6f-4d23-82dd-0715d78482f1"/>
+                            <textFieldExpression><![CDATA[$V{valMeasure}]]></textFieldExpression>
+                        </textField>
+                    </cellContents>
+                </crosstabCell>
+                <crosstabCell rowTotalGroup="row" columnTotalGroup="col">
+                    <cellContents backcolor="#BFE1FF" mode="Opaque">
+                        <textField>
+                            <reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="03729dae-cd1a-4e2a-83ab-73447d2927c7"/>
+                            <textFieldExpression><![CDATA[$V{valMeasure}]]></textFieldExpression>
+                        </textField>
+                    </cellContents>
+                </crosstabCell>
+            </crosstab>
+        </band>
+    </summary>
+</jasperReport>

@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <f:metadata>
+            <!--f:event type="preRenderView" listener="#{teacherMainController.updateGradeEntryView()}"/-->
+        </f:metadata>
+
+        <ui:define name="center">
+
+            <h:form id="dialogForm"  >
+
+                <p:growl autoUpdate="true" showDetail="true" life="15000"/>
+
+                <br/>
+                &nbsp;&nbsp;<h:outputText value="Grade Entries in #{teacherMainController.currentTeacherLoading.subject.subjcode.subjcode} for #{teacherMainController.currentTeacherLoading.section.name}" styleClass="title_custom"/>
+                <br/>
+                &nbsp;&nbsp;
+                <h:outputText value="Teacher (#{teacherMainController.currentTeacherLoading.teacher.fullName}). Any changes are automatically saved." styleClass="subtitle_custom"/>
+                <br/>
+
+                <h:panelGrid columns="3">
+                    <h:panelGrid columns="4">
+                        &nbsp;&nbsp;
+                        <h:outputLabel value ="View Options: " style="font-weight: bold"/>
+                        <p:selectOneButton value="#{teacherMainController.viewOptions}">
+                            <p:ajax update=":dialogForm" listener="#{teacherMainController.updateGradeEntryView()}"/>
+                            <f:selectItem itemLabel="Show All" itemValue="0" />
+                            <f:selectItem itemLabel="1st Quarter" itemValue="1" />
+                            <f:selectItem itemLabel="2nd Quarter" itemValue="2" />
+                            <f:selectItem itemLabel="3rd Quarter" itemValue="3" />
+                            <f:selectItem itemLabel="4th Quarter" itemValue="4" />
+                        </p:selectOneButton>
+                    </h:panelGrid>
+
+                </h:panelGrid>
+                <br/>
+
+                <p:commandLink rendered="false" id="hash1" action="/docs/001.pdf?faces-redirect=true" styleClass="a" style="color: white;" 
+                               value="Boys - Hash Value: #{teacherMainController.maleGradeEntryHashValue} (Click for more details.)" />
+                <br/>
+                <p:dataTable id="table" var="datum" rowIndexVar="rindex" 
+                             value="#{teacherMainController.currentTeacherLoadingStudentRecords}" scrollable="true" 
+                             liveScroll="true" scrollRows="500" style="width: #{teacherMainController.gradeEntryTblLength}px"> 
+
+                    <p:column headerText="#" width="25" > 
+                        #{rindex+1}
+                    </p:column>
+
+                    <p:column headerText="Student Information"  > 
+                        <h:outputText value="#{datum.bedEnrollment.student.fullName}"  />
+                        <h:outputText value=" (#{datum.bedEnrollment.student.sex})"  />
+                    </p:column>
+
+                    <p:column headerText="1st GP" rendered="#{teacherMainController.showFirstQ}" width="65" > 
+                        <p:inputText style="width: 50px"  value="#{datum.p1}">
+                            <p:ajax listener="#{teacherMainController.performSaveGradeRecord(datum)}" update=":dialogForm:table"/>
+                        </p:inputText>
+                    </p:column>
+
+                    <p:column headerText="2nd GP"  rendered="#{teacherMainController.showSecondQ}" width="65"> 
+                        <p:inputText style="width: 50px"  value="#{datum.p2}">
+                            <p:ajax listener="#{teacherMainController.performSaveGradeRecord(datum)}" update=":dialogForm:table"/>
+                        </p:inputText>
+                    </p:column>
+
+                    <p:column headerText="3rd GP" rendered="#{teacherMainController.showThirdQ}" width="65"> 
+                        <p:inputText style="width: 50px"  value="#{datum.p3}">
+                            <p:ajax listener="#{teacherMainController.performSaveGradeRecord(datum)}" update=":dialogForm:table"/>
+                        </p:inputText>
+                    </p:column>
+
+                    <p:column headerText="4th GP" rendered="#{teacherMainController.showFourthQ}" width="65"> 
+                        <p:inputText style="width: 50px"  value="#{datum.p4}">
+                            <p:ajax listener="#{teacherMainController.performSaveGradeRecord(datum)}" update=":dialogForm:table"/>
+                        </p:inputText>
+
+                    </p:column>
+
+                    <p:column headerText="Finals" rendered="#{teacherMainController.showFinals}" width="65"> 
+                        <p:inputText style="width: 50px"  value="#{datum.finals}">
+                            <p:ajax listener="#{teacherMainController.performSaveGradeRecord(datum)}" update=":dialogForm:table"/>
+                        </p:inputText>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+
+                <br/>
+                <p:commandLink rendered="false" id="hash2" action="/docs/001.pdf?faces-redirect=true" styleClass="a" style="color: white;" 
+                               value="Girls - Hash Value: #{teacherMainController.femaleGradeEntryHashValue} (Click for more details.)" />
+
+                <br/>
+                <p:dataTable id="d2" var="datum" rowIndexVar="rindex" 
+                             value="#{teacherMainController.currentTeacherLoadingStudentRecordsF}" scrollable="true" 
+                             liveScroll="true" scrollRows="500" style="width: #{teacherMainController.gradeEntryTblLength}px"> 
+
+                    <p:column headerText="#" width="25" >  
+                        #{rindex+1}
+                    </p:column>
+
+                    <p:column headerText="Student Information"  > 
+                        <h:outputText value="#{datum.bedEnrollment.student.fullName}"  />
+                        <h:outputText value=" (#{datum.bedEnrollment.student.sex})"  />
+                    </p:column>
+
+                    <p:column headerText="1st GP" rendered="#{teacherMainController.showFirstQ}" width="65" > 
+                        <p:inputText style="width: 50px"  value="#{datum.p1}">
+                            <p:ajax listener="#{teacherMainController.performSaveGradeRecord(datum)}" update=":dialogForm:d2"/>
+                        </p:inputText>
+
+                    </p:column>
+
+                    <p:column headerText="2nd GP"  rendered="#{teacherMainController.showSecondQ}" width="65"> 
+
+                        <p:inputText style="width: 50px"  value="#{datum.p2}">
+                            <p:ajax listener="#{teacherMainController.performSaveGradeRecord(datum)}" update=":dialogForm:d2"/>
+                        </p:inputText>
+                    </p:column>
+
+                    <p:column headerText="3rd GP" rendered="#{teacherMainController.showThirdQ}" width="65"> 
+
+                        <p:inputText style="width: 50px"  value="#{datum.p3}">
+                            <p:ajax listener="#{teacherMainController.performSaveGradeRecord(datum)}" update=":dialogForm:d2"/>
+                        </p:inputText>
+                    </p:column>
+
+
+
+                    <p:column headerText="4th GP" rendered="#{teacherMainController.showFourthQ}" width="65"> 
+
+                        <p:inputText style="width: 50px"  value="#{datum.p4}">
+                            <p:ajax listener="#{teacherMainController.performSaveGradeRecord(datum)}" update=":dialogForm:d2"/>
+                        </p:inputText>
+
+                    </p:column>
+
+                    <p:column headerText="Final" rendered="#{teacherMainController.showFinals}" width="65"> 
+
+                        <p:inputText style="width: 50px"  value="#{datum.finals}">
+                            <p:ajax listener="#{teacherMainController.performSaveGradeRecord(datum)}" update=":dialogForm:d2"/>
+                        </p:inputText>
+
+                    </p:column>
+
+
+                </p:dataTable>
+                <br/>
+                <br/>
+                &nbsp;
+                <p:commandLink immediate="true" style="color: #e33b06" value="Back to Loads" action="teacher_loading.xhtml?faces-redirect=true"/>
+
+            </h:form>
+
+
+        </ui:define>
+
+    </ui:composition>
+
+
+</html>
+

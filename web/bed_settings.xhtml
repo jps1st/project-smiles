@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+            <p:layout >
+                <p:layoutUnit position="center" > 
+                    <h:form id="mainForm">
+                        <p:growl id="messages" autoUpdate="true" showDetail="true" sticky="false" life="15000"/>  
+                        <br/>
+                        &nbsp;&nbsp;<h:outputText value="Global Settings" styleClass="title_custom"/>
+                        <br/>
+                        &nbsp;&nbsp;<h:outputText value="These settings applies only to the current school year specified." />
+                        <br/>
+                        &nbsp;&nbsp;<h:outputText value="Note that all transactions is subject to the active school year." />
+                        <br/>
+                        <br/>
+
+                        &nbsp;&nbsp;
+                        <p:outputLabel value="Current School Year: " style="font-weight: bolder; color: #e33b06"/>
+                        <p:inputText type="number" style="width: 60px; color: #e33b06" value="#{ bedSettingsController.schoolYear}" >
+                            <p:ajax update=":mainForm" listener="#{bedSettingsController.refresh()}"/>
+                        </p:inputText>
+                        <p:outputLabel value="- #{bedSettingsController.schoolYear + 1}" style="color: #e33b06"/> 
+                        &nbsp;
+                        &nbsp;
+                        <p:outputLabel value="Set as active year: "/>
+                        &nbsp;
+                        <p:selectBooleanCheckbox  value="#{bedSettingsController.currentSettings.activeYear}" />
+                        &nbsp;
+                        <p:commandButton value="Save Changes" actionListener="#{bedSettingsController.saveChanges()}"/>
+                        <br/><br/>
+
+                        &nbsp;
+                        <p:outputLabel value="School Name: " style="font-weight: bold"/>
+                        &nbsp;
+                        <p:inputText size="60" value="#{bedSettingsController.currentSettings.schoolName}"/>
+                        <br/><br/>
+
+                        <p:panelGrid columns="4">
+
+                            <p:outputLabel value="Region: "/>
+                            <p:inputText size="30" value="#{bedSettingsController.currentSettings.region}"/>
+
+                            <p:outputLabel value="Division: "/>
+                            <p:inputText size="30" value="#{bedSettingsController.currentSettings.division}"/>
+
+                            <p:outputLabel value="District: "/>
+                            <p:inputText size="30" value="#{bedSettingsController.currentSettings.district}"/>
+
+                            <p:outputLabel value="School ID: "/>
+                            <p:inputText size="30" value="#{bedSettingsController.currentSettings.schoolId}"/>
+
+                            <p:outputLabel value="School Principal: "/>
+                            <p:inputText size="30" value="#{bedSettingsController.currentSettings.schoolPrincipalName}"/>
+
+                            <p:outputLabel value="Division Representative: "/>
+                            <p:inputText size="30" value="#{bedSettingsController.currentSettings.divisionRepresentative}"/>
+
+                            <p:outputLabel value="School Div. Superintendent: "/>
+                            <p:inputText size="30" value="#{bedSettingsController.currentSettings.schoolsDivisionSuperintendent}"/>
+
+                            <p:outputLabel value="Start of SY: "/>
+                            <p:outputPanel><p:calendar value="#{bedSettingsController.currentSettings.syStart}"/> 
+                                &nbsp; 
+                                <p:outputLabel value="Format: MM/dd/YY"/></p:outputPanel>
+
+                            <p:outputLabel value="End of SY:"/>
+                            <p:outputPanel><p:calendar value="#{bedSettingsController.currentSettings.syEnd}"/> 
+                                &nbsp; 
+                                <p:outputLabel value="Format: MM/dd/YY"/></p:outputPanel>
+
+                        </p:panelGrid>
+                        <br/>
+
+                        &nbsp;<b>School Days:</b>
+                        <p:panelGrid columns="10" >
+                            <p:outputLabel value="June: "/>
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{bedSettingsController.currentSettings.juneDays}"/>
+
+                            <p:outputLabel value="July: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.julyDays}"/>
+
+                            <p:outputLabel value="August: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.augDays}"/>
+
+                            <p:outputLabel value="September: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.septDays}"/>
+
+                            <p:outputLabel value="October: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.octDays}"/>
+
+                            <p:outputLabel value="November: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.novDays}"/>
+
+                            <p:outputLabel value="December: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.decDays}"/>
+
+                            <p:outputLabel value="January: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.janDays}"/>
+
+                            <p:outputLabel value="February: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.febDays}"/>
+
+                            <p:outputLabel value="March: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.marchDays}"/>
+
+                            <p:outputLabel value="April: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.aprilDays}"/>
+
+                            <p:outputLabel value="May: "/>
+                            <p:inputText size="5" type ="number" style="width: 50px" value="#{bedSettingsController.currentSettings.mayDays}"/>
+
+                        </p:panelGrid>
+                    </h:form>
+
+                </p:layoutUnit>
+            </p:layout>
+        </ui:define>
+
+
+    </ui:composition>
+
+
+</html>
+

@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+
+            <h:form id="mainForm"  >
+                <p:growl autoUpdate="true" showDetail="true" life="15000"/>  
+
+                <h:panelGroup>
+                    <br/>
+                    <p:spacer width="15"/>
+                    <h:outputText value="Narrative Records for #{bedSectionNarrativeMC.section.name}" 
+                                  styleClass="title_custom"/>
+                    <br/>
+                    <p:spacer width="15"/>
+                    <h:outputText value="Adviser task: edit student promotions here. " />  
+                    <br/>
+                    <br/>
+                    <p:spacer width="15"/>
+                    <h:outputLabel value ="View Options: " style="font-weight: bold"/>
+                    <p:selectOneButton value="#{bedSectionNarrativeMC.viewOption}">
+                        <p:ajax update=":mainForm"/>
+                        <f:selectItem itemLabel="1st Quarter" itemValue="1" />
+                        <f:selectItem itemLabel="2nd Quarter" itemValue="2" />
+                        <f:selectItem itemLabel="3rd Quarter" itemValue="3" />
+                        <f:selectItem itemLabel="4th Quarter" itemValue="4" />
+                    </p:selectOneButton>
+                    <br/>
+                    <br/>
+                </h:panelGroup>
+
+                <p:spacer width="10"/>
+                <h:panelGrid columns="1">
+                    <p:dataTable style="width: 700px" rowIndexVar="rindex" var="datum" value="#{bedSectionNarrativeMC.maleEnrollments}" 
+                                 scrollable="true"  liveScroll="true" scrollRows="500" > 
+                        <p:column headerText="#" width="15" >
+                            #{rindex + 1}
+                        </p:column>
+                        <p:column headerText="Student Name" width="250"> 
+                            <h:outputText value="#{datum.student.fullName}" style="font-weight: bold;"/>
+                        </p:column>
+
+                        <p:column headerText="FirstQ Narrative" rendered="#{bedSectionNarrativeMC.viewOption == 1 || bedSectionNarrativeMC.viewOption == 0}" >
+                            <center>
+                                <p:inputTextarea rows="2" cols="40"   value="#{datum.bedEnrollmentNarrativeReport.firstGrading}">
+                                    <p:ajax  listener="#{bedSectionNarrativeMC.saveNarrativeReport(datum.bedEnrollmentNarrativeReport)}"/>
+                                </p:inputTextarea>
+                            </center>
+                        </p:column>
+                        <p:column  headerText="SecondQ Narrative" rendered="#{bedSectionNarrativeMC.viewOption == 2 || bedSectionNarrativeMC.viewOption == 0}">
+                            <center>
+                                <p:inputTextarea rows="2" cols="40"  value="#{datum.bedEnrollmentNarrativeReport.secondGrading}">
+                                    <p:ajax  listener="#{bedSectionNarrativeMC.saveNarrativeReport(datum.bedEnrollmentNarrativeReport)}"/>
+                                </p:inputTextarea>
+                            </center>
+                        </p:column>
+                        <p:column headerText="ThirdQ Narrative" rendered="#{bedSectionNarrativeMC.viewOption == 3 || bedSectionNarrativeMC.viewOption == 0}">
+                            <center>
+                                <p:inputTextarea rows="2" cols="40"  value="#{datum.bedEnrollmentNarrativeReport.thirdGrading}">
+                                    <p:ajax  listener="#{bedSectionNarrativeMC.saveNarrativeReport(datum.bedEnrollmentNarrativeReport)}"/>
+                                </p:inputTextarea>
+                            </center>
+                        </p:column>
+                        <center>
+                            <p:column headerText="FourthQ Narrative" rendered="#{bedSectionNarrativeMC.viewOption == 4 || bedSectionNarrativeMC.viewOption == 0}">
+                                <p:inputTextarea rows="2" cols="40"   value="#{datum.bedEnrollmentNarrativeReport.fourthGrading}">
+                                    <p:ajax  listener="#{bedSectionNarrativeMC.saveNarrativeReport(datum.bedEnrollmentNarrativeReport)}"/>
+                                </p:inputTextarea>
+                            </p:column>
+                        </center>
+                    </p:dataTable>
+                    <p:dataTable style="width: 700px" rowIndexVar="rindex" var="datum" value="#{bedSectionNarrativeMC.femaleEnrollments}" 
+                                 scrollable="true"  liveScroll="true" scrollRows="500" > 
+                        <p:column headerText="#" width="15" >
+                            #{rindex + 1}
+                        </p:column>
+                        <p:column headerText="Student Name" width="250"> 
+                            <h:outputText value="#{datum.student.fullName}" style="font-weight: bold;"/>
+                        </p:column>
+
+                        <p:column headerText="FirstQ Narrative" rendered="#{bedSectionNarrativeMC.viewOption == 1 || bedSectionNarrativeMC.viewOption == 0}" >
+                            <center>
+                                <p:inputTextarea rows="2" cols="40"   value="#{datum.bedEnrollmentNarrativeReport.firstGrading}">
+                                    <p:ajax  listener="#{bedSectionNarrativeMC.saveNarrativeReport(datum.bedEnrollmentNarrativeReport)}"/>
+                                </p:inputTextarea>
+                            </center>
+                        </p:column>
+                        <p:column  headerText="SecondQ Narrative" rendered="#{bedSectionNarrativeMC.viewOption == 2 || bedSectionNarrativeMC.viewOption == 0}">
+                            <center>
+                                <p:inputTextarea rows="2" cols="40"  value="#{datum.bedEnrollmentNarrativeReport.secondGrading}">
+                                    <p:ajax  listener="#{bedSectionNarrativeMC.saveNarrativeReport(datum.bedEnrollmentNarrativeReport)}"/>
+                                </p:inputTextarea>
+                            </center>
+                        </p:column>
+                        <p:column headerText="ThirdQ Narrative" rendered="#{bedSectionNarrativeMC.viewOption == 3 || bedSectionNarrativeMC.viewOption == 0}">
+                            <center>
+                                <p:inputTextarea rows="2" cols="40"  value="#{datum.bedEnrollmentNarrativeReport.thirdGrading}">
+                                    <p:ajax  listener="#{bedSectionNarrativeMC.saveNarrativeReport(datum.bedEnrollmentNarrativeReport)}"/>
+                                </p:inputTextarea>
+                            </center>
+                        </p:column>
+                        <center>
+                            <p:column headerText="FourthQ Narrative" rendered="#{bedSectionNarrativeMC.viewOption == 4 || bedSectionNarrativeMC.viewOption == 0}">
+                                <p:inputTextarea rows="2" cols="40"   value="#{datum.bedEnrollmentNarrativeReport.fourthGrading}">
+                                    <p:ajax  listener="#{bedSectionNarrativeMC.saveNarrativeReport(datum.bedEnrollmentNarrativeReport)}"/>
+                                </p:inputTextarea>
+                            </p:column>
+                        </center>
+                    </p:dataTable>
+                </h:panelGrid>
+            </h:form>
+
+
+        </ui:define>
+
+    </ui:composition>
+
+
+</html>
+

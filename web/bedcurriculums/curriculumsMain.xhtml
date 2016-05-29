@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Curriculum Roster" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="The Master list of curriculums. A curriculum is a collection of 'subject sets' per grade level. " />
+            <br/>
+            <br/>
+
+
+            <h:form id="mainForm"  >
+
+                <p:dataTable var="sub" value="#{bedCurriculumController.items}" scrollable="true" 
+                             scrollRows="500" style="width: 900px"> 
+                    <p:column headerText="Effective" width="100" > 
+                        <h:outputText value="#{sub.effectiveSY}"/>
+                    </p:column>
+
+                    <p:column headerText="Name"> 
+                        <h:outputText value="#{sub.shortName}"/>
+                        <br/>
+                        <p:commandLink style="font-size: 12px" ajax="false" value="View Subjects" action="#{bedCurriculumController.showSubjects(sub)}"/>
+                        &nbsp;
+                        <p:commandLink style="font-size: 12px" ajax="false" value="Edit/View" action="#{bedCurriculumController.editViewCurriculum(sub)}"/>
+                        &nbsp;
+                        <p:commandLink style="font-size: 12px" ajax="false" value="Remove" action="#{bedCurriculumController.removeCurri(sub)}"/>
+                    </p:column>
+
+                    <p:column headerText="ID"  width="100"> 
+                        <h:outputText value="#{sub.curricode}"/>
+                    </p:column>
+                </p:dataTable>
+                <br/>
+                &nbsp;&nbsp;<p:commandLink style="color: #e33b06" value="Create New Curriculum" action="#{bedCurriculumController.createNew()}"/>
+
+            </h:form> 
+
+        </ui:define>
+
+
+    </ui:composition>
+
+
+</html>
+

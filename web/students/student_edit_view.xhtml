@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+
+            &nbsp;&nbsp;<h:outputText value="Student Details" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Edit student information here." />
+            <br/>
+
+            <h:form id="mainForm"  >
+
+                <p:growl autoUpdate="true" showDetail="true" life="15000"/>
+
+                <h:panelGrid columns="2">
+
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="StudentID:"/>
+                        <p:outputPanel>
+                            <p:inputMask mask="9999-9999-9999" value="#{studentMainController.currentStudent.learnerIdNo}"  />
+                        </p:outputPanel>
+                        <h:outputLabel value="Last Name:"/> 
+                        <p:inputText required="true" requiredMessage="Last Name missing" value="#{studentMainController.currentStudent.lastname}"/>
+                        <h:outputLabel value="First Name:"/> 
+                        <p:inputText required="true" requiredMessage="First Name missing" value="#{studentMainController.currentStudent.firstname}"/>
+                        <h:outputLabel value="Middle Name:"/> 
+
+                        <p:inputText value="#{studentMainController.currentStudent.middlename}"/>
+
+                        <h:outputLabel value="Suffix:"/> 
+                        <p:inputText value="#{studentMainController.currentStudent.suffix}"/>
+                        <h:outputLabel value="Gender"/>
+                        <p:selectOneMenu required="true" requiredMessage="Please specify student gender first!" value="#{studentMainController.currentStudent.sex}" >
+                            <f:selectItem itemLabel="Male" itemValue="M" />
+                            <f:selectItem itemLabel="Female" itemValue="F" />
+                        </p:selectOneMenu>
+                        <h:outputLabel value="Birth Date:"/> 
+                        <p:outputPanel>
+                            <p:calendar required="true" requiredMessage="Please specify student birthdate first!" value="#{studentMainController.currentStudent.birthdate}"/> 
+                            &nbsp;
+                            <p:outputLabel value="MM/dd/YY"/>
+                        </p:outputPanel>
+
+                        <h:outputLabel value="Ethnic Group:"/> 
+                        <p:inputText value="#{studentMainController.currentStudent.tribe}"/>
+
+                        <h:outputLabel value="Mother Tongue:"/> 
+                        <p:inputText value="#{studentMainController.currentStudent.motherTongue}"/>
+
+                        <h:outputLabel value="Religion:"/> 
+                        <p:inputText value="#{studentMainController.currentStudent.religion}"/>
+
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" >
+
+                        <h:outputLabel value="House No./Street:"/>
+                        <p:inputTextarea value="#{studentMainController.currentStudent.addressStreetHouseNo}"   rows="1" cols="20" maxlength="255" autoResize="false"/>
+
+
+                        <h:outputLabel value="Barangay"/>
+                        <p:inputTextarea value="#{studentMainController.currentStudent.addressBarangay}"   rows="1" cols="20"  maxlength="255"  autoResize="false"/>
+
+
+                        <h:outputLabel value="Municipality"/>
+                        <p:inputTextarea value="#{studentMainController.currentStudent.addressMunicipality}"   rows="1" cols="20"  maxlength="255" autoResize="false"/>
+
+
+                        <h:outputLabel value="Province"/>
+                        <p:inputTextarea value="#{studentMainController.currentStudent.addressProvince}"   rows="1" cols="20"  maxlength="255"  autoResize="false"/>
+
+                        <h:outputLabel value=""/> 
+                        <h:outputLabel value=""/> 
+
+                        <h:outputLabel value="Father:"/>
+                        <p:outputPanel>
+                            <p:autoComplete size ="20" value="#{studentMainController.currentStudent.parentFather}" 
+                                            completeMethod="#{studentMainController.completeParent}" 
+                                            var="tc"  itemLabel="#{tc}" itemValue="#{tc}" dropdown="true" scrollHeight="300" >
+                                <p:ajax  event="itemSelect" update=":mainForm:guardianRel"/>
+                            </p:autoComplete>
+                            &nbsp;
+                            <p:commandLink value="Edit Parent"  update=":parentDialogForm" oncomplete="parentDialog.show()" actionListener="#{parentMainController.editParent(studentMainController.currentStudent.parentFather)}">
+                               
+                            </p:commandLink>
+                            &nbsp;
+                            <p:commandLink value="New Parent" update=":parentDialogForm" oncomplete="parentDialog.show()" actionListener="#{studentMainController.editFather()}" action="#{parentMainController.createNewParent()}">
+                               
+                            </p:commandLink>
+                        </p:outputPanel>
+                        <h:outputLabel value="Mother:"/> 
+                        <p:outputPanel>
+                            <p:autoComplete size ="20" value="#{studentMainController.currentStudent.parentMother}" 
+                                            completeMethod="#{studentMainController.completeParent}" 
+                                            var="tc"  itemLabel="#{tc}" itemValue="#{tc}" dropdown="true" scrollHeight="300" >
+                                <p:ajax  event="itemSelect" update=":mainForm:guardianRel"/>
+                            </p:autoComplete>
+                            &nbsp;
+                            <p:commandLink value="Edit Parent"   update=":parentDialogForm" oncomplete="parentDialog.show()" actionListener="#{parentMainController.editParent(studentMainController.currentStudent.parentMother)}">
+                               
+                            </p:commandLink>
+                            &nbsp;
+                            <p:commandLink value="New Parent"  update=":parentDialogForm" oncomplete="parentDialog.show()" actionListener="#{studentMainController.editMother()}" action="#{parentMainController.createNewParent()}">
+                               
+                            </p:commandLink>
+                        </p:outputPanel>
+                        <h:outputLabel value="Guardian:"/> 
+                        <p:outputPanel>
+                            <p:autoComplete size ="20" value="#{studentMainController.currentStudent.parentGuardian}" 
+                                            completeMethod="#{studentMainController.completeParent}" 
+                                            var="tc" itemLabel="#{tc}" itemValue="#{tc}" dropdown="true" scrollHeight="300" >
+                                <p:ajax  event="itemSelect" update=":mainForm"/>
+                            </p:autoComplete>
+                            &nbsp;
+                            <p:commandLink value="Edit Parent"   update=":parentDialogForm" oncomplete="parentDialog.show()" actionListener="#{parentMainController.editParent(studentMainController.currentStudent.parentGuardian)}">
+                               
+                            </p:commandLink>
+                            &nbsp;
+                            <p:commandLink value="New Parent"  update=":parentDialogForm" oncomplete="parentDialog.show()" actionListener="#{studentMainController.editGuardian()}" action="#{parentMainController.createNewParent()}">
+                              
+                            </p:commandLink>
+                        </p:outputPanel>
+
+                        <h:outputLabel value="Guardian Relationship:"/> 
+                        <p:inputText id="guardianRel"  value="#{studentMainController.currentStudent.guardianRelationship}"/>            
+                        <h:outputLabel value="Parent/Guardian Contact No.:"/> 
+                        <p:outputLabel id="guardianNum"  value="#{studentMainController.currentStudent.parentGuardian.contactNum}"/>
+                    </p:panelGrid>
+                </h:panelGrid>
+
+                &nbsp;
+                <p:commandLink style="color: darkolivegreen" value="Save Changes" action="#{studentMainController.student_edit_view_SaveChanges()}"/>&nbsp;&nbsp;
+                <p:commandLink style="color: darkolivegreen" value="Create New Student" action="#{studentMainController.createNewStudent()}"/>&nbsp;&nbsp;
+                <p:commandLink immediate="true" style="color: #e33b06" value="Back to Student Roster" action="studentMain.xhtml?faces-redirect=true"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                <p:outputLabel value="Section: " style="font-weight: bold"/>
+                <p:autoComplete forceSelection="true" value="#{studentMainController.selectedSectionToEnroll}"
+                                completeMethod="#{studentMainController.completeSections}" var="datum" 
+                                itemLabel="#{datum.name}" itemValue="#{datum}" dropdown="true">
+
+
+                    <p:ajax event="itemSelect" update="mainForm" />
+                    <p:column headerText="Grade"><p:outputLabel value="#{datum.year}"/></p:column>
+                    <p:column headerText="Section"><p:outputLabel value="#{datum.name}"/></p:column>
+                </p:autoComplete>
+                <p:commandButton value="Enroll" actionListener="#{studentMainController.enrollStudent}"/>
+                <p:commandButton value="Transfer" actionListener="#{studentMainController.transferStudent}"/>
+                <p:commandButton value="Unenroll" onclick="confirmDialog.show()"/>
+
+                <br/>
+            </h:form> 
+
+            <p:dialog width="430" header="Confirm Unenroll" widgetVar="confirmDialog"  resizable="false" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                <h:form id="dialogForm"  >
+
+                    <p:outputLabel value="Are you sure you want to unenroll this student? This will remove all grade records (if any) in the process"/>
+                    <br/>
+                    <p:commandButton actionListener="#{studentMainController.unenrollStudent}" oncomplete="confirmDialog.hide()"  update=":mainForm" value="Unenroll"  icon="ui-icon-close"/>
+                    <p:commandButton value="Cancel" onclick="confirmDialog.hide()"/>
+
+                </h:form> 
+
+            </p:dialog> 
+
+            <p:dialog  header="Parent Details" widgetVar="parentDialog"  resizable="true" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                &nbsp;&nbsp;<h:outputText value="For mothers, please use their maiden name." />
+                <br/><br/>
+
+                <h:form id="parentDialogForm"  >
+                    <p:messages autoUpdate="true" showDetail="false"/>
+
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Parent Id:"/>
+                        <p:outputPanel>
+                            <p:inputText id="parentId" value="#{parentMainController.currentParent.parentId}" />
+                            &nbsp;
+                            <p:commandLink update=":parentDialogForm:parentId" actionListener="#{parentMainController.randomizeCurrentParentID()}">
+                                <p:graphicImage id="editorStd" value="/design/icons/16/refresh1.png"/>
+                                <p:tooltip value="Randomize Parent ID" for="editorStd"/>
+                            </p:commandLink>
+                        </p:outputPanel>
+
+                        <h:outputLabel value="Last Name:"/> 
+                        <p:inputText required="true" requiredMessage="Last name missing." value="#{parentMainController.currentParent.lastName}"/>
+                        <h:outputLabel value="First Name:"/> 
+                        <p:inputText required="true" requiredMessage="First name missing." value="#{parentMainController.currentParent.firstName}"/>
+                        <h:outputLabel value="Middle Name:"/> 
+                        <p:inputText value="#{parentMainController.currentParent.middleName}"/>
+                        <h:outputLabel value="Suffix:"/> 
+                        <p:inputText value="#{parentMainController.currentParent.suffix}"/>
+                        <h:outputLabel value="Contact Number:"/> 
+                        <p:outputPanel>
+                            <p:inputText value="#{parentMainController.currentParent.contactNum}"/>
+                            <h:outputLabel value="*Use only numeric characters."/> 
+                        </p:outputPanel>
+                    </p:panelGrid>
+                    <br/>
+                    &nbsp;
+                    <p:commandButton value="Save Changes" actionListener="#{parentMainController.saveChanges()}" action="#{studentMainController.processNewParent(parentMainController.currentParent)}" update=":parentDialogForm :mainForm"/>&nbsp;&nbsp;
+                    <p:commandButton value="Create New Parent" actionListener="#{parentMainController.createNewParent()}" update=":parentDialogForm"/>&nbsp;&nbsp;
+                    <p:commandButton immediate="true"  value="Close" onclick="parentDialog.hide()"/>
+                    <br/>
+                </h:form> 
+
+
+            </p:dialog> 
+
+
+        </ui:define>
+
+    </ui:composition>
+
+
+</html>
+

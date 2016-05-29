@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c59f3996-7b4b-47f5-a2e8-5682b4b7f07e">
+    <property name="ireport.zoom" value="1.771561000000001"/>
+    <property name="ireport.x" value="66"/>
+    <property name="ireport.y" value="0"/>
+    <field name="section" class="java.lang.String"/>
+    <field name="no" class="java.lang.String"/>
+    <field name="name" class="java.lang.String"/>
+    <field name="lrn" class="java.lang.String"/>
+    <field name="sy" class="java.lang.String"/>
+    <field name="gender" class="java.lang.String"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="66" splitType="Stretch">
+            <textField>
+                <reportElement x="0" y="12" width="555" height="20" uuid="6a4de37f-13e0-4dd7-871e-ba69aa2de5ae"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Verdana" size="10" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{section}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="20" uuid="11cb521b-6573-49ff-9431-0f7944030762"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Verdana" size="14" isBold="true"/>
+                </textElement>
+                <text><![CDATA[CLASS LIST]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="22" width="555" height="20" uuid="c6cffb90-2fa0-47d3-b2de-0947b6c3655e"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Verdana" size="10" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA["SY: " + $F{sy}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="104" y="40" width="304" height="20" uuid="cbbfa26c-7b16-444a-a98e-5ffb3b58bcd7"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Verdana" size="12" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{gender}]]></textFieldExpression>
+            </textField>
+            <line>
+                <reportElement x="104" y="58" width="375" height="1" uuid="fb27af11-63aa-4b5c-b401-616445623f17"/>
+            </line>
+        </band>
+    </title>
+    <pageHeader>
+        <band splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band height="20" splitType="Stretch">
+            <staticText>
+                <reportElement x="157" y="0" width="274" height="20" uuid="1f761031-6b55-44fe-8758-c48d7846c6d8"/>
+                <textElement>
+                    <font fontName="Verdana" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Name]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="104" y="0" width="43" height="20" uuid="35c2fd17-32d1-4386-af53-af5fb7084a31"/>
+                <textElement>
+                    <font fontName="Verdana" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[No.]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="382" y="0" width="97" height="20" uuid="10277927-3ced-4012-97ec-6e314fd0ee54"/>
+                <textElement>
+                    <font fontName="Verdana" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[LRN]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="15" splitType="Stretch">
+            <textField>
+                <reportElement x="157" y="0" width="274" height="15" uuid="7abcfea9-f182-4397-960f-de7690cccc66"/>
+                <textElement>
+                    <font fontName="Verdana" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="104" y="0" width="43" height="15" uuid="a6f8813b-019f-4e32-8ceb-5dbcc428996b"/>
+                <textElement>
+                    <font fontName="Verdana" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="382" y="0" width="97" height="15" uuid="705fa9ce-d452-4cc2-8062-be4c2bd00d24"/>
+                <textElement>
+                    <font fontName="Verdana" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{lrn}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band splitType="Stretch"/>
+    </pageFooter>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>

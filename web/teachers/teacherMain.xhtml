@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Teacher Master List" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="The Master list of teachers." styleClass="subtitle_custom" />
+            <br/>
+            <br/>
+
+            <h:form id="searchForm"  >
+                <h:panelGrid columns="3" id="searchPanel">
+                    <p:focus context="searchPanel"/>
+                    <h:panelGrid columns="5">
+                        <h:outputLabel  value="Search Teacher: " />
+                        <p:inputText id="search_keyword" value="#{teacherMainController.teacherMain_SearckKey}" />
+
+                        <p:commandButton id="search_button" value=" Search " update=":mainForm"   
+                                         action="#{teacherMainController.search()}" icon="ui-icon-search" />
+                    </h:panelGrid>
+                    <p:outputPanel>
+                        &nbsp;&nbsp;
+                        <p:commandButton  action="#{teacherMainController.createNewTeacher()}" value="Create New Teacher Record" />
+                        &nbsp;
+                        <p:commandButton action="#{reportsController.f1001()}" value="Print Form 1001" /> 
+                    </p:outputPanel>
+
+                </h:panelGrid>
+            </h:form>
+
+            <h:form id="mainForm"  >
+                <p:growl autoUpdate="true" showDetail="true" life="15000"/>
+                <p:dataTable var="datum" value="#{teacherMainController.teacherList}" scrollable="true" 
+                             id="dataTable" rowIndexVar="rindex" liveScroll="true" scrollRows="500" style="width: 900px"> 
+
+                    <p:column headerText="#" width="5" > 
+                        <h:outputText value="#{rindex + 1}" />
+                    </p:column>
+
+                    <p:column headerText="Full Name" width="150" > 
+
+                        <h:outputText value="#{datum.lastName}, #{datum.firstName} #{datum.middleName}"  style="font-weight: bold"/>
+                        <h:outputText value=" (#{datum.teacherId}) "  style="color: #0971b2"/>
+
+                        <br/>
+                        <p:commandLink style="font-size: 13px; " value="Profile" action="#{teacherMainController.editTeacher(datum)}"/>
+                        &nbsp;
+                        <p:commandLink style="font-size: 13px" value="Loads" action="#{teacherMainController.editTeacherLoading(datum)}"/>
+                        &nbsp;
+                        <p:commandLink style="font-size: 13px" value="Reset Password" action="#{teacherMainController.resetPassword(datum)}"/>
+                    </p:column>
+
+                    <p:column headerText="Active" width="50">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <p:selectBooleanCheckbox value="#{datum.active}" >
+                            <p:ajax listener="#{teacherMainController.saveTeacher(datum)}"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                &nbsp;
+                Note: Only 50 records are shown. Please narrow results using search.
+            </h:form> 
+
+        </ui:define>
+
+    </ui:composition>
+
+
+</html>
+

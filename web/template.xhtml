@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'/>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
+
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Smiles :)</title>
+            </f:facet>
+
+
+        </h:head>
+
+        <h:body rendered="#{userManager.logged}">
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="55" resizable="true" closable="true" collapsible="true" >
+                    <h:panelGrid columns="2">
+                        <p:graphicImage value="/design/cjc/logo32.png"/>
+                        <p:outputLabel value="The Smiles Project: Welcome to the official K-12 School Management Information System" style="font-weight: bold; " />
+                    </h:panelGrid>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="30" closable="true" collapsible="true">
+                    Powered By RandomPi Technologies 2016
+                </p:layoutUnit>
+
+                <p:layoutUnit rendered="true" position="west" header="Management Tools" collapsible="true" closable="false" resizable="true" >
+                    <h:form>
+                        <p:menu >
+                            <p:submenu label="Setup Pages" rendered="#{!empty userManager.loggedSystemUser}">
+                                <p:menuitem styleClass="menui-button" value="Global Settings" url="/bed_settings.xhtml" />
+                                <p:menuitem styleClass="menui-button" value="Curriculums" url="/bedcurriculums/curriculumsMain.xhtml" />
+                                <p:menuitem styleClass="menui-button" value="Subjects" url="/subjects/subjectMain.xhtml"  rendered="true" />
+                            </p:submenu>
+                            <p:submenu label="Basic Education" rendered="#{!empty userManager.loggedSystemUser}">
+                                <p:menuitem styleClass="menui-button"  value="Sections" url="/sections/bed_sections.xhtml" />
+                                <p:menuitem styleClass="menui-button" value="Teachers" url="/teachers/teacherMain.xhtml"/>
+                                <p:menuitem styleClass="menui-button" value="Students" url="/students/studentMain.xhtml" />
+                                <p:menuitem styleClass="menui-button" value="Parents" url="/parents/parentMain.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="Teacher Menu" rendered="#{!empty userManager.loggedTeacher}">
+                                <p:menuitem  value="My Section" url="/sections/bed_sections.xhtml" />
+                                <p:menuitem value="My Loads" url="/teachers/teacher_loading.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="User Account Options">
+                                <p:menuitem value="Teacher Account" rendered="#{!empty userManager.loggedTeacher}" url="/teachers/teacher_edit_view.xhtml"/>
+                                <p:menuitem value="Logout" action="#{userManager.logOut()}" icon="ui-icon-power"/>
+                            </p:submenu>
+                        </p:menu>
+                    </h:form>
+                    <br/><br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h:link outcome="/welcome_page" value="Welcome Page" style="color: darkorange"/>
+
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" style="height: 300px">
+
+                    <ui:insert name="center" />
+
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+
+    </f:view>
+
+    <p:ajaxStatus style="width:128px;height:128px;position:fixed;right:20px;bottom:5px">
+        <f:facet name="start">
+            <center>
+                <p:outputLabel value="Working..."/><p:spacer width="10"/><br/>
+                <p:graphicImage value="/design/ajax_loading.gif" />
+            </center>
+        </f:facet>
+
+        <f:facet name="complete">
+            <h:outputText value="" />
+        </f:facet>
+
+    </p:ajaxStatus>
+
+    <p:idleMonitor timeout="#{25 * 60 * 100}"
+                   onidle="idleDialog.show()"/>
+
+    <p:dialog header="Session Expired!" closable="false" resizable="false"
+              widgetVar="idleDialog" modal="true" width="400">
+        <h:outputText value="You were idle for a long time and the session expired. Refresh to continue."  />
+        &nbsp;&nbsp;&nbsp;
+        <p:commandButton value="Refresh" oncomplete="location.reload()"/>
+        <br/>
+    </p:dialog>
+
+</html>
+

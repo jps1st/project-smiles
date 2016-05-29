@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Subject Roster" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="The Master list of subjects." />
+            <br/>
+            <br/>
+
+            <h:form id="searchForm"  >
+                <h:panelGrid columns="2">
+                    <h:panelGrid columns="3" id="searchPanel">
+                        <p:focus context="searchPanel"/>
+                        <p:panelGrid columns="3">
+                            <h:outputLabel  value="Keyword: " />
+                            <p:inputText id="search_keyword" value="#{subjectMainController.keyword}" />
+                            <p:commandButton id="search_button" value=" Search " update=":subjectForm"   
+                                             action="#{subjectMainController.search()}" icon="ui-icon-search" />
+                        </p:panelGrid>
+                    </h:panelGrid>
+                    <p:commandLink style="color: #e33b06" value="Create New Subject" action="#{subjectMainController.createNewSubject()}" />
+                </h:panelGrid>
+                &nbsp;&nbsp;
+                <p:outputLabel value="*If keyword is empty then all records are returned."/>
+            </h:form>
+
+            <br/>
+
+            <h:form id="subjectForm"  >
+
+                <p:dataTable var="sub" value="#{subjectMainController.data}" scrollable="true" 
+                             id="subjectTable" liveScroll="true" scrollRows="500"
+                             style="width: 800px" rowIndexVar="rindex"> 
+
+
+                    <p:column headerText="#" width="25"> 
+                        <h:outputText value="#{rindex + 1}" />
+                    </p:column>
+
+                    <p:column headerText="Subject"> 
+                        <h:outputText value="#{sub.subjcode}" style="font-weight: bold" /> 
+                        <h:outputText value=" (#{sub.subjdesc})"/>
+                        <br/>
+                        <p:commandLink value="Edit/View" action="#{subjectMainController.editViewSubject(sub)}" style="font-size: 12px"/>
+                        &nbsp;
+                        <p:commandLink value="Remove" action="#{subjectMainController.removeSubject(sub)}" style="font-size: 12px"/>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+
+
+            </h:form> 
+
+        </ui:define>
+
+
+    </ui:composition>
+
+
+</html>
+

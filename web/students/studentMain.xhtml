@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Student Roster" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="The Master list of students." />
+            <br/>
+            <br/>
+
+            <h:form id="searchForm"  >
+
+                <h:panelGrid columns="2">
+
+                    <h:panelGrid columns="3" id="searchPanel">
+
+                        <p:focus context="searchPanel"/>
+
+                        <h:panelGrid columns="3">
+                            <h:outputLabel  value="Keyword: " />
+                            <p:inputText id="search_keyword" value="#{studentMainController.keyword}" />
+                            <p:commandButton id="search_button" value=" Search " update=":mainForm"   
+                                             action="#{studentMainController.search()}" icon="ui-icon-search" />
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+
+                    <p:commandButton  value="Create New Student Record" action="#{studentMainController.createNewStudent()}" />
+
+                </h:panelGrid>
+                &nbsp;&nbsp;
+                <p:outputLabel value="*If keyword is empty then all records are returned."/>
+
+            </h:form>
+
+            <br/>
+
+            <h:form id="mainForm">
+
+                <p:dataTable rowIndexVar="rindex" var="sub" value="#{studentMainController.studentList}" scrollable="true" 
+                             id="subjectTable" rows="10" paginator="true"
+                             scrollRows="500" liveScroll="true" lazy="true"> 
+
+                    <p:column headerText="#" width="15"> 
+                        <p:outputLabel value="#{rindex + 1}"/>
+                    </p:column>
+
+                    <p:column headerText="Student Information" width="320">
+
+                        <h:outputText value="#{sub.fullName}" style="font-weight: bold"/>
+                        <h:outputText value=" (#{sub.learnerIdNo})"  style="color: #0971b2"/>
+                        <h:outputText value=", Age: #{sub.age}"  />
+                        <br/>
+                        <p:commandLink  value="Edit" action="#{studentMainController.editViewStudent(sub)}" style=" font-size: 13px"/>
+                        &nbsp;
+                        <p:commandLink value="Remove" action="#{studentMainController.removeStudent(sub)}" style=" font-size: 13px"/>
+
+                    </p:column>
+
+                    <p:column rendered="true" headerText="Current Section" width="250">
+                        <h:outputText value="#{sub.sectionEnrolled} " />
+                    </p:column>
+
+                    <p:column rendered="true" headerText="Address" width="250">
+                        <h:outputText value="#{sub.addressStreetHouseNo}, #{sub.addressBarangay}, #{sub.addressMunicipality}, #{sub.addressProvince} " />
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                &nbsp;
+                Only a maximum of 50 entries are shown. Narrow down results by searching.
+
+            </h:form> 
+
+        </ui:define>
+
+    </ui:composition>
+
+
+</html>
+

@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <br/>
+            &nbsp;&nbsp;<h:outputText  value="Subjects in #{bedCurriculumController.current.shortName} - Grade #{bedCurriculumController.subjectsInCurrentPage_NavigatingGrade}" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Master list for subjects under this curriculum ordered according to grade levels." />
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Sections subcribed to this curriculum will follow the 'subject set' specified by their grade levels." />
+            <br/>
+            <br/>
+
+            <h:form id="mainForm"  >
+                <p:growl id="messages" showDetail="true" life="15000" autoUpdate="true"/> 
+
+                &nbsp;
+                <h:commandLink value="Grade 1" action="#{bedCurriculumController.showSubjectsInGrade(1)}"/> &nbsp; &nbsp; 
+                <h:commandLink value="Grade 2" action="#{bedCurriculumController.showSubjectsInGrade(2)}"/> &nbsp; &nbsp; 
+                <h:commandLink value="Grade 3" action="#{bedCurriculumController.showSubjectsInGrade(3)}"/> &nbsp; &nbsp; 
+                <h:commandLink value="Grade 4" action="#{bedCurriculumController.showSubjectsInGrade(4)}"/> &nbsp; &nbsp; 
+                <h:commandLink value="Grade 5" action="#{bedCurriculumController.showSubjectsInGrade(5)}"/> &nbsp; &nbsp; 
+                <h:commandLink value="Grade 6" action="#{bedCurriculumController.showSubjectsInGrade(6)}"/> &nbsp; &nbsp; 
+                <h:commandLink value="Grade 7" action="#{bedCurriculumController.showSubjectsInGrade(7)}"/> &nbsp; &nbsp; 
+                <h:commandLink value="Grade 8" action="#{bedCurriculumController.showSubjectsInGrade(8)}"/> &nbsp; &nbsp; 
+                <h:commandLink value="Grade 9" action="#{bedCurriculumController.showSubjectsInGrade(9)}"/> &nbsp; &nbsp; 
+                <h:commandLink value="Grade 10" action="#{bedCurriculumController.showSubjectsInGrade(10)}"/> &nbsp; &nbsp;
+                <h:commandLink value="Grade 11" action="#{bedCurriculumController.showSubjectsInGrade(11)}"/> &nbsp; &nbsp;
+                <h:commandLink value="Grade 12" action="#{bedCurriculumController.showSubjectsInGrade(12)}"/>
+                <br/>
+                <br/>
+                <p:dataTable var="sub" value="#{bedCurriculumController.subjectsInCurrent}" scrollable="true"  
+                             id="subjectTable" scrollRows="500" style="width: 1050px"> 
+
+                    <p:column headerText="#" width="30"> 
+                        <p:outputLabel value="#{sub.displayOrder}"/>
+                    </p:column>
+                    <p:column headerText="Subj Code" width="70">
+                        <p:outputLabel value="#{sub.subjcode.subjcode}"/>
+                    </p:column> 
+
+                    <p:column headerText="Subj Description" width="200"> 
+                        <h:outputText value="#{sub.subjcode.subjdesc}"/>
+                    </p:column>
+                    <p:column headerText="Grade" width="50"> 
+                        <h:outputText value="#{sub.yrLevel}"/>
+                    </p:column>
+                    <p:column headerText="Credits" width="50"> 
+                        <h:outputText value="#{sub.crUnits}"/>
+                    </p:column>
+                    <p:column headerText="" width="150"> 
+                        <h:commandLink value="Edit/View" action="#{bedCurriculumController.editViewBedCurriDetail(sub)}"/> 
+                        &nbsp; <h:commandLink action="#{bedCurriculumController.removeCurriSubject(sub)}" value="Remove"/>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                &nbsp;
+                <h:commandLink value="Create New Subject" action="#{bedCurriculumController.createNewBedCurriDetail()}" style="color: #e33b06"/> &nbsp; &nbsp;
+                <h:commandLink value="Back to Curriculum Roster" action="curriculumsMain.xhtml?faces-redirect=true" style="color: #e33b06"/> &nbsp; &nbsp;
+
+
+            </h:form>
+
+            <p:dialog width="350" header="Curriculum Subject Info" widgetVar="curriSubjDiag" modal="true" draggable="true" maximizable="true"  appendTo="@(body)">
+
+                <h:form id="curriSubjDiagForm">
+
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Display Order:"/>
+                        <p:inputText value="#{curriSubjDiagControl.detail.displayOrder}" type="number"/>
+                        <p:outputLabel value="Subject:"/>
+                        <p:autoComplete value="#{curriSubjDiagControl.detail.subjcode}" 
+                                        completeMethod="#{curriSubjDiagControl.completeSubjects}" var="sub" 
+                                        forceSelection="true" itemValue="#{sub}" itemLabel="#{sub.subjcode}" 
+                                        dropdown="true" scrollHeight="300">
+                            <p:ajax event="itemSelect" update="curriSubjDiagForm" />  
+                            <p:column><p:outputLabel value="#{sub.subjcode}"/></p:column>
+                            <p:column><p:outputLabel value="#{sub.displayDesc}"/></p:column>
+                        </p:autoComplete>
+
+                        <p:outputLabel value="Description:"/>
+                        <p:outputLabel value="#{curriSubjDiagControl.detail.subjcode.subjdesc}"/>
+
+                        <p:outputLabel  value="Credits:"/>
+                        <p:inputText type="number" value="#{curriSubjDiagControl.detail.crUnits}" size="30"/>
+
+                    </p:panelGrid>
+
+                    <p:commandButton value="Save Changes" actionListener="#{curriSubjDiagControl.saveChanges()}" update=":mainForm"/>
+                    <p:commandButton value="Close" onclick="curriSubjDiag.hide()"/>
+
+                </h:form>
+
+            </p:dialog>
+
+        </ui:define>
+
+
+    </ui:composition>
+
+
+</html>
+

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <br/>
+            &nbsp;&nbsp;<h:outputText  value="Subject Details" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Edit subject parameters under the curriculum." />
+            <br/>
+            <br/>
+
+            <h:form id="mainForm">
+                <p:growl id="messages" life="15000" autoUpdate="true"/> 
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Grade:"/>
+                    <p:inputText type="number" value="#{bedCurriculumController.currentBedCurriDetail.yrLevel}"/>
+                    <p:outputLabel value="Display Order:"/>
+                    <p:fieldset>
+                        <p:inputText required="true" value="#{bedCurriculumController.currentBedCurriDetail.displayOrder}" type="number" size="5"/>
+                        <br/>
+                        <p:outputLabel value="*Specifies the order this subject will be displayed in the report card."/>
+                        <br/>
+                        <p:outputLabel value="*If zero, this subject will not be displayed in the report card."/>
+                        <br/>
+                        <p:outputLabel value="*If a whole number, this subject will be displayed as a category."/>
+                        <br/>
+                        <p:outputLabel value="*If a rational number, this subject is displayed as an item under a category."/>
+                    </p:fieldset>
+                    <p:outputLabel value="Subject:"/>
+
+                    <p:autoComplete value="#{bedCurriculumController.currentBedCurriDetail.subjcode}"
+                                    completeMethod="#{bedCurriculumController.completeSubjects}" forceSelection="true" 
+                                    var="x" itemLabel="#{x}" itemValue="#{x}" dropdown="true" >
+                        <p:ajax event="itemSelect" update="mainForm:desc" />
+                    </p:autoComplete>
+
+                    <p:outputLabel  value="Subject Description:"/>
+                    <p:outputLabel id="desc"  value="#{bedCurriculumController.currentBedCurriDetail.subjcode.subjdesc}"/>
+
+                    <p:outputLabel  value="Credits:"/>
+                    <p:inputText type="number" value="#{bedCurriculumController.currentBedCurriDetail.crUnits}" size="30"/>
+
+                </p:panelGrid>
+
+                <br/>
+                &nbsp;
+                <p:commandLink style="color: darkolivegreen" value="Save Changes" action="#{bedCurriculumController.curri_subject_view_edit_SaveChanges()}"/>&nbsp;&nbsp;
+                <p:commandLink immediate="true" style="color: #e33b06" value="Back to '#{bedCurriculumController.current.shortName}'" action="curri_subjects.xhtml?faces-redirect=true"/>
+
+            </h:form>
+        </ui:define>
+
+
+    </ui:composition>
+
+
+</html>
+

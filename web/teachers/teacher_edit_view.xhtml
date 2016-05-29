@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Teacher Profile Details" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Edit teacher information here." />
+            <br/>
+            <br/>
+
+            <h:form id="subjectDialogForm"  >
+
+                <p:growl id="err_messages" showDetail="true"  autoUpdate="true"/> 
+
+                <p:panelGrid columns="4" style="width: 80px">
+                    <h:outputLabel value="TeacherID" style="width: 100px"/>
+                    <p:outputPanel>
+                        <p:inputMask mask="999-999-9" value="#{teacherMainController.currentTeacher.teacherId}" size="10" />
+                    </p:outputPanel>
+                    <h:outputLabel value="Last Name:"/> 
+                    <p:inputText required="true" requiredMessage="Last Name missing" value="#{teacherMainController.currentTeacher.lastName}"/>
+                    <h:outputLabel value="First Name:"/> 
+                    <p:inputText required="true" requiredMessage="First Name missing" value="#{teacherMainController.currentTeacher.firstName}"/>
+                    <h:outputLabel value="Middle Name:"/> 
+                    <p:inputText required="true" requiredMessage="Middle Name missing"  value="#{teacherMainController.currentTeacher.middleName}"/>
+                    <h:outputLabel value="Suffix:"/> 
+                    <p:inputText value="#{teacherMainController.currentTeacher.suffix}"/>
+                    <h:outputLabel value="Gender"/>
+                    <p:selectOneMenu value="#{teacherMainController.currentTeacher.gender}" >
+                        <f:selectItem itemLabel="Male" itemValue="M" />
+                        <f:selectItem itemLabel="Female" itemValue="F" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+
+                <p:outputPanel rendered="#{!empty userManager.loggedTeacher}">
+                    <br/>
+                    &nbsp;
+                    <p:outputLabel value="Change your password:" style="font-weight: bold"/>
+                    <br/>
+
+                    &nbsp;
+                    <h:outputLabel value="Old Password:"/> #{" "}
+                    <p:password value="#{teacherMainController.currentTeacherOldPass}"/>
+                    &nbsp;
+                    <h:outputLabel value="New Password:"/> #{" "}
+                    <p:password value="#{teacherMainController.currentTeacherNewPass}"/>
+                    &nbsp;
+                    <h:outputLabel value="Confirm New Password:"/> #{" "}
+                    <p:password value="#{teacherMainController.currentTeacherConfPass}"/>
+
+                    <br/>
+                </p:outputPanel>
+                <br/>
+                &nbsp;
+                <p:commandLink style="color: darkolivegreen" value="Save Changes" action="#{teacherMainController.teacher_edit_view_SaveChanges()}"/>&nbsp;&nbsp;
+                <p:commandLink rendered="#{!empty userManager.loggedSystemUser}" immediate="true" style="color: #e33b06" value="Back to Teachers" action="teacherMain.xhtml?faces-redirect=true"/>
+
+                <br/>
+            </h:form> 
+
+        </ui:define>
+
+
+    </ui:composition>
+
+
+</html>
+

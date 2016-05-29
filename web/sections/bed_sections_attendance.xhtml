@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="center">
+
+            <center>
+                <h:form id="mainForm"  >
+                    <p:growl id="messages" showDetail="true" autoUpdate="true" life="15000"/>  
+                    &nbsp;&nbsp;
+                    <h:outputText value="Attendance Records for #{bedSectionAttendanceMC.section.name}" 
+                                  styleClass="title_custom"/>
+                    <br/>
+                    &nbsp;&nbsp;<h:outputText value="Adviser task: edit individual student attendance here. " />  
+                    <h:link outcome="/sections/bed_sections" rendered="false" value="Go back to Welcome Page" 
+                            style="color: #e33b06"/>
+                    <br/>
+
+                    <p:selectOneButton value="#{bedSectionAttendanceMC.viewOptions}">
+                        <p:ajax update=":mainForm" listener="#{teacherMainController.updateGradeEntryView()}"/>
+                        <f:selectItem itemLabel="June" itemValue="6" />
+                        <f:selectItem itemLabel="July" itemValue="7" />
+                        <f:selectItem itemLabel="August" itemValue="8" />
+                        <f:selectItem itemLabel="September" itemValue="9" />
+                        <f:selectItem itemLabel="October" itemValue="10" />
+                        <f:selectItem itemLabel="November" itemValue="11" />
+                        <f:selectItem itemLabel="December" itemValue="12" />
+                        <f:selectItem itemLabel="January" itemValue="1" />
+                        <f:selectItem itemLabel="February" itemValue="2" />
+                        <f:selectItem itemLabel="March" itemValue="3" />
+                        <f:selectItem itemLabel="April" itemValue="4" />
+                    </p:selectOneButton>
+
+                    <br/>
+                    <br/>
+
+                    <p:dataTable rowIndexVar="rindex" style="width: 600px" var="datum" scrollable="true" liveScroll="true"
+                                 value="#{bedSectionAttendanceMC.maleEnrollments}" scrollRows="500" >
+
+                        <p:column headerText="#" width="15" >
+                            #{rindex + 1}
+                        </p:column>
+                        <p:column headerText="BOYS" width="350">
+                            <p:graphicImage value="/design/icons/16/stduent1.png"/>
+                            &nbsp;
+                            <h:outputText value="#{datum.student.fullName}" />
+                        </p:column>
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 6}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.june}">
+                                <p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 7}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.july}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 8}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.august}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 9}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.september}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 10}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.october}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 11}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.november}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 12}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.december}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 1}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.january}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 2}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.february}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 3}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.march}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 4}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.april}">
+                                <p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/>
+                            </p:inputText>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:dataTable
+                        rowIndexVar="rindex" style="width: 600px" var="datum" scrollable="true" liveScroll="true"
+                        value="#{bedSectionAttendanceMC.femaleEnrollments}" scrollRows="500" >
+
+                        <p:column headerText="#" width="15" >
+                            #{rindex + 1}
+                        </p:column>
+
+                        <p:column headerText="GIRLS" width="350">
+                            <p:graphicImage value="/design/icons/16/student1.png"/>
+                            &nbsp;
+                            <h:outputText value="#{datum.student.fullName}" />
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 6}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.june}">
+                                <p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/>
+                            </p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 7}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.july}">
+                                <p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/>
+                            </p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 8}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.august}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 9}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.september}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 10}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.october}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 11}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.november}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 12}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.december}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 1}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.january}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 2}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.february}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 3}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.march}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Absent" rendered="#{bedSectionAttendanceMC.viewOptions == 4}" >
+                            <p:inputText size="5" style="width: 50px" type ="number" value="#{datum.bedEnrollmentAttendanceRecord.april}"><p:ajax listener="#{bedSectionAttendanceMC.saveAttendance(datum.bedEnrollmentAttendanceRecord)}"/></p:inputText>
+                        </p:column>
+
+                    </p:dataTable>
+
+
+                </h:form>
+            </center>
+        </ui:define>
+    </ui:composition>
+
+
+</html>
+

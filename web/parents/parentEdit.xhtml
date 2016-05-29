@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+
+            &nbsp;&nbsp;<h:outputText value="Parent Details" styleClass="title_custom"/>
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="For mothers, please use their maiden name." />
+            <br/><br/>
+
+            <h:form id="mainForm"  >
+                <p:messages autoUpdate="true" showDetail="true"/>
+
+                <p:panelGrid columns="2">
+                    <h:outputLabel value="Parent Id:"/>
+                    <p:outputPanel>
+                        <p:inputText id="parentId" value="#{parentMainController.currentParent.parentId}" />
+                        &nbsp;
+                        <p:commandLink update=":mainForm:parentId" actionListener="#{parentMainController.randomizeCurrentParentID()}">
+                            <p:graphicImage id="editorStd" value="/design/icons/16/refresh1.png"/>
+                            <p:tooltip value="Randomize Parent ID" for="editorStd"/>
+                        </p:commandLink>
+                    </p:outputPanel>
+
+                    <h:outputLabel value="Last Name:"/> 
+                    <p:inputText required="true" requiredMessage="Last name missing." value="#{parentMainController.currentParent.lastName}"/>
+                    <h:outputLabel value="First Name:"/> 
+                    <p:inputText required="true" requiredMessage="First name missing." value="#{parentMainController.currentParent.firstName}"/>
+                    <h:outputLabel value="Middle Name:"/> 
+                    <p:inputText value="#{parentMainController.currentParent.middleName}"/>
+                    <h:outputLabel value="Suffix:"/> 
+                    <p:inputText value="#{parentMainController.currentParent.suffix}"/>
+                    <h:outputLabel value="Contact Number:"/> 
+                    <p:outputPanel>
+                        <p:inputText value="#{parentMainController.currentParent.contactNum}"/>
+                        <h:outputLabel value="*Use only numeric characters."/> 
+                    </p:outputPanel>
+                </p:panelGrid>
+                <br/>
+                &nbsp;
+                <p:commandLink style="color: darkolivegreen" value="Save Changes" action="#{parentMainController.saveChanges()}"/>&nbsp;&nbsp;
+                <p:commandLink style="color: darkolivegreen" value="Create New Parent" action="#{parentMainController.createNewParent()}"/>&nbsp;&nbsp;
+                <p:commandLink immediate="true" style="color: #e33b06" value="Back to Parent Roster" action="parentMain.xhtml?faces-redirect=true"/>
+                <br/>
+            </h:form> 
+
+        </ui:define>
+
+
+    </ui:composition>
+
+
+</html>
+

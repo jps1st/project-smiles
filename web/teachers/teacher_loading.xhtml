@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <p:dialog  header="Consolidated Grading Sheet Printing" widgetVar="msheetDiag" width="300"  resizable="false" modal="true" draggable="true" maximizable="true"  appendTo="@(body)"  >
+
+                <h:form >
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Grading Period: "/> 
+                        <p:selectOneMenu  value="#{teacherLoadConsoGradeSheetDiagController.gradingPeriod}" >
+                            <f:selectItem itemLabel="First" itemValue="1" />
+                            <f:selectItem itemLabel="Second" itemValue="2" />
+                            <f:selectItem itemLabel="Third" itemValue="3" />
+                            <f:selectItem itemLabel="Fourth" itemValue="4" />
+                            <f:selectItem itemLabel="Final" itemValue="5" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <br/>
+                    <p:commandButton styleClass = "option-button" value="Print" onclick="msheetDiag.hide()" action="#{teacherLoadConsoGradeSheetDiagController.print()}"/>
+                </h:form> 
+
+            </p:dialog>
+
+            <h:form id="mainForm"  >
+                <p:growl autoUpdate="true" showDetail="true" life="15000"/>
+                <br/>
+                &nbsp;&nbsp;<h:outputText value="#{teacherMainController.currentTeacher.fullName}" styleClass="title_custom"/>
+                <br/>
+                &nbsp;&nbsp;&nbsp;<h:outputText value="Teacher loading details." />
+                <br/>
+                <br/>
+                <h:panelGrid columns="1" rendered="#{!empty userManager.loggedSystemUser}">
+                    <p:outputLabel value="Assign a new class:" style="color: darkgreen"/>
+
+                    <p:panelGrid columns="2">
+
+
+                        <h:outputText value="Section:"  />
+
+                        <p:autoComplete forceSelection="true" value="#{teacherMainController.selectedSection}" scrollHeight="300"
+                                        completeMethod="#{teacherMainController.completeSections}" var="datum"  dropdown="true" 
+                                        itemLabel="#{datum.year} - #{datum.name}" itemValue="#{datum}" >
+                            <p:ajax event="itemSelect" update=":mainForm" />
+
+                        </p:autoComplete>
+
+
+
+                        <h:outputText value="Subject:"  />
+
+                        <p:autoComplete forceSelection="true" value="#{teacherMainController.selectedSubject}" scrollHeight="300"
+                                        completeMethod="#{teacherMainController.completeSubjects}" var="datum" 
+                                        itemLabel="#{datum.subjcode.subjcode}" itemValue="#{datum}" dropdown="true" >
+                            <p:ajax event="itemSelect" update="mainForm" />
+                            <p:column><p:outputLabel value="#{datum.subjcode.subjcode}"/></p:column>
+                            <p:column><p:outputLabel value="#{datum.subjcode.displayDesc}"/></p:column>
+                        </p:autoComplete> 
+
+
+
+                    </p:panelGrid>
+
+                    <p:outputPanel>
+
+                        <p:commandButton actionListener="#{teacherMainController.addLoad}"  update=":mainForm" value="Add"  icon="ui-icon-disk"/>
+                        <p:commandButton actionListener="#{teacherMainController.transferLoad}"  update=":mainForm" value="Transfer"  icon="ui-icon-disk"/>
+                        <p:commandButton  actionListener="#{teacherMainController.removeLoad}" update=":mainForm" value="Remove"  icon="ui-icon-disk"/>
+
+                    </p:outputPanel>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="1">
+
+                    <p:dataTable style="width: 855px" var="datum" rowIndexVar="rindex" 
+                                 value="#{teacherMainController.currentTeacherLoad}" scrollable="true" liveScroll="true"
+                                 scrollRows="500"> 
+                 
+                        <p:column headerText="#" width="5" > 
+                            #{rindex + 1}
+                        </p:column>
+
+                        <p:column headerText="Grade" width="140" > 
+                            <h:outputText value="#{datum.section.year} - #{datum.section.name}"  />
+
+                            - <h:outputText value="#{datum.subject.subjcode.subjdesc}" style="font-weight: bold"  />
+
+                        </p:column>
+
+                        <p:column headerText="Population" width="60" > 
+                            <h:outputText value="#{datum.section.population}"  />
+                        </p:column>
+
+                        <p:column headerText="" width="60" > 
+                            <p:commandLink value="Grade Entries" action="#{teacherMainController.showGradeEntry(datum)}"/>
+                            <p:spacer width="5"/>
+                            <p:commandLink styleClass="c" value="Gr. Sheets(M)" action="#{reportsController.f1004PerLoad(datum, 'M')}"/>
+                            <p:spacer width="5"/>
+                            <p:commandLink styleClass="d" value="Gr. Sheets(F)" action="#{reportsController.f1004PerLoad(datum, 'F')}"/>
+                            <p:spacer width="5"/>
+                            <p:commandLink rendered="#{datum.subject.aggregate}" styleClass="d" value="Consolidated" actionListener="#{teacherLoadConsoGradeSheetDiagController.setup(datum.section, datum.subject)}" 
+                                           onclick="PF('msheetDiag').show();"/>
+                        </p:column>
+
+
+
+                    </p:dataTable>
+                </h:panelGrid>
+                <br/>
+                &nbsp;
+                <p:commandLink rendered="#{!empty userManager.loggedSystemUser}" immediate="true" style="color: #e33b06" value="Back to Teachers" action="teacherMain.xhtml?faces-redirect=true"/>
+            </h:form>
+
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>
+

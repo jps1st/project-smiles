@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="center">
+
+            <br/>
+            &nbsp;&nbsp;<h:outputText value="Confirm Parent Record Removal" styleClass="title_custom"/>
+            <br/>
+            <br/>
+            <br/>
+
+            <h:form  >
+                &nbsp;&nbsp;
+
+                <h:outputLabel value="#{parentMainController.parent_remove_RemoveMessage}"/>
+                <br/>
+                <br/>
+                <br/>
+                &nbsp;
+                <p:commandLink rendered="#{parentMainController.parent_remove_AllowRemove}" style="color: #e33b06"  value="Remove Parent Now" action="#{parentMainController.removeParentNow()}"/>&nbsp;&nbsp;
+                <p:commandLink style="color: darkolivegreen" immediate="true"  value="Back to Parent Roster" action="parentMain.xhtml?faces-redirect=true"/>
+
+                <br/>
+            </h:form> 
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+
